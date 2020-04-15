@@ -351,6 +351,12 @@ kproto.default <- function(x, k, lambda = NULL, iter.max = 100, nstart = 1, na.r
     tot.within    <- sum(within)
   }
   
+  if(na.rm == FALSE){
+    if(sum(allNAs) > 0){
+      clusters[allNAs] <- NA
+      dists[allNAs,] <- NA
+    }
+  }
 
   names(clusters) <- row.names(dists) <- row.names(x)
   rownames(protos) <- NULL
