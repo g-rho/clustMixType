@@ -162,8 +162,6 @@ kproto.default <- function(x, k, lambda = NULL, iter.max = 100, nstart = 1, na.r
       if(as.integer(k) != k){k <- as.integer(k); warning(paste("k has been set to", k,"!"))}
       if(sum(complete.cases(x)) < k) stop("Data frame has less complete observations than clusters!")
       ids <- sample(row.names(x[complete.cases(x),]), k)
-      if(nrow(x) < k) stop("Data frame has less observations than clusters!")
-      ids <- sample(nrow(x), k)
       protos <- x[ids,]
     }
     if (length(k) > 1){
