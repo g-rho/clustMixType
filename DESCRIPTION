@@ -1,6 +1,6 @@
 Package: clustMixType
-Version: 0.2-3
-Date: 2019-03-23
+Version: 0.2-4
+Date: 2019-04-16
 Title: k-Prototypes Clustering for Mixed Variable-Type Data
 Author: Gero Szepannek [aut, cre], Rabea Aschenbruck [aut]
 Maintainer: Gero Szepannek <gero.szepannek@web.de>

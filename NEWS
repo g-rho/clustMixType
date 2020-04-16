@@ -1,4 +1,6 @@
 
+clustMixType_0.2-4  2020-04-16  - bug fix ln. 165f 
+				- assign cluster NA to obs. with NAs in all variables
 clustMixType_0.2-3  2020-03-23  - implemented wrapper validation-index-functions 
 				- in validation_kproto: added argument kp_obj=c("optimal","all") if output should contain only optimal kproto-object or all calculated kproto-objects
 				- in validation_kproto: explanation added in help for situation object!=NULL & data!=NULL 
@@ -6,7 +8,7 @@ clustMixType_0.2-3  2020-03-23  - implemented wrapper validation-index-functions
 clustMixType_0.2-2  2020-03-03  - initial prototypes without NAs
 				- bug fix: sample in case of multiple minima (which(x==min()) instead of which.min(x))
 				- bug fix: pass na.rm for nstart > 1
-				- Example of ValIndices: added kproto(…, keep.data=TRUE) and fix k_{max} instead of k_max
+				- Example of ValIndices: added kproto(?, keep.data=TRUE) and fix k_{max} instead of k_max
 				- hexbin added via usethis::use_logo("C:/R/contribs/clustMixType.png")
 clustMixType_0.2-1  2019-02-25  - validation indices added (cindex, dunn, gamma, gplus, mcclain, ptbiserial, silhouette, tau)
 				- Bugfix (case k=1: line 229, following the check for equal cluster; line 285: following the check for empty cluster)
