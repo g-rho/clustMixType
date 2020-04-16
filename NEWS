@@ -1,6 +1,7 @@
 
 clustMixType_0.2-4  2020-04-16  - bug fix ln. 165f 
 				- assign cluster NA to obs. with NAs in all variables
+				- l. 287 & 330 only update prototypes for variables where not all values are NA
 clustMixType_0.2-3  2020-03-23  - implemented wrapper validation-index-functions 
 				- in validation_kproto: added argument kp_obj=c("optimal","all") if output should contain only optimal kproto-object or all calculated kproto-objects
 				- in validation_kproto: explanation added in help for situation object!=NULL & data!=NULL 
