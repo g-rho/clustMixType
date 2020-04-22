@@ -153,11 +153,12 @@ cindex_kproto <- function(object = NULL, data = NULL, k = NULL, S_sort = NULL, k
     # find the optimal k, if it is ambiguously: sample
     k_m <- which(indices == min(indices))
     if(length(k_m)>1){k_m <- sample(k_m,1)}
-    k_opt <- indices[k_m]
+    k_opt <- as.integer(names(indices[k_m]))
+    index_opt <- indices[k_m]
     
     output <- switch(kp_obj,
-                     "all" = list("k_opt" = k_opt, "indices" = indices, "kp_obj" = trace_kp),
-                     "optimal" = list("k_opt" = k_opt, "indices" = indices, "kp_obj" = trace_kp[[k_m]]$object))
+                     "all" = list("k_opt" = k_opt, "index_opt" = index_opt, "indices" = indices, "kp_obj" = trace_kp),
+                     "optimal" = list("k_opt" = k_opt, "index_opt" = index_opt, "indices" = indices, "kp_obj" = trace_kp[[k_m]]$object))
     return(output)
   }
 }
@@ -247,11 +248,12 @@ dunn_kproto <- function(object = NULL, data = NULL, k = NULL, kp_obj = "optimal"
     # find the optimal k, if it is ambiguously: sample
     k_m <- which(indices == max(indices))
     if(length(k_m)>1){k_m <- sample(k_m,1)}
-    k_opt <- indices[k_m]
+    k_opt <- as.integer(names(indices[k_m]))
+    index_opt <- indices[k_m]
     
     output <- switch(kp_obj,
-                     "all" = list("k_opt" = k_opt, "indices" = indices, "kp_obj" = trace_kp),
-                     "optimal" = list("k_opt" = k_opt, "indices" = indices, "kp_obj" = trace_kp[[k_m]]$object))
+                     "all" = list("k_opt" = k_opt, "index_opt" = index_opt, "indices" = indices, "kp_obj" = trace_kp),
+                     "optimal" = list("k_opt" = k_opt, "index_opt" = index_opt, "indices" = indices, "kp_obj" = trace_kp[[k_m]]$object))
     return(output)
 
   }
@@ -337,11 +339,12 @@ gamma_kproto <- function(object = NULL, data = NULL, k = NULL, dists = NULL, kp_
     # find the optimal k, if it is ambiguously: sample
     k_m <- which(indices == max(indices))
     if(length(k_m)>1){k_m <- sample(k_m,1)}
-    k_opt <- indices[k_m]
+    k_opt <- as.integer(names(indices[k_m]))
+    index_opt <- indices[k_m]
     
     output <- switch(kp_obj,
-                     "all" = list("k_opt" = k_opt, "indices" = indices, "kp_obj" = trace_kp),
-                     "optimal" = list("k_opt" = k_opt, "indices" = indices, "kp_obj" = trace_kp[[k_m]]$object))
+                     "all" = list("k_opt" = k_opt, "index_opt" = index_opt, "indices" = indices, "kp_obj" = trace_kp),
+                     "optimal" = list("k_opt" = k_opt, "index_opt" = index_opt, "indices" = indices, "kp_obj" = trace_kp[[k_m]]$object))
     return(output)
 
   }
@@ -427,11 +430,12 @@ gplus_kproto <- function(object = NULL, data = NULL, k = NULL, dists = NULL, kp_
     # find the optimal k, if it is ambiguously: sample
     k_m <- which(indices == min(indices))
     if(length(k_m)>1){k_m <- sample(k_m,1)}
-    k_opt <- indices[k_m]
+    k_opt <- as.integer(names(indices[k_m]))
+    index_opt <- indices[k_m]
     
     output <- switch(kp_obj,
-                     "all" = list("k_opt" = k_opt, "indices" = indices, "kp_obj" = trace_kp),
-                     "optimal" = list("k_opt" = k_opt, "indices" = indices, "kp_obj" = trace_kp[[k_m]]$object))
+                     "all" = list("k_opt" = k_opt, "index_opt" = index_opt, "indices" = indices, "kp_obj" = trace_kp),
+                     "optimal" = list("k_opt" = k_opt, "index_opt" = index_opt, "indices" = indices, "kp_obj" = trace_kp[[k_m]]$object))
     return(output)
   }
 }
@@ -483,11 +487,12 @@ mcclain_kproto <- function(object = NULL, data = NULL, k = NULL, kp_obj = "optim
     # find the optimal k, if it is ambiguously: sample
     k_m <- which(indices == min(indices))
     if(length(k_m)>1){k_m <- sample(k_m,1)}
-    k_opt <- indices[k_m]
+    k_opt <- as.integer(names(indices[k_m]))
+    index_opt <- indices[k_m]
     
     output <- switch(kp_obj,
-                     "all" = list("k_opt" = k_opt, "indices" = indices, "kp_obj" = trace_kp),
-                     "optimal" = list("k_opt" = k_opt, "indices" = indices, "kp_obj" = trace_kp[[k_m]]$object))
+                     "all" = list("k_opt" = k_opt, "index_opt" = index_opt, "indices" = indices, "kp_obj" = trace_kp),
+                     "optimal" = list("k_opt" = k_opt, "index_opt" = index_opt, "indices" = indices, "kp_obj" = trace_kp[[k_m]]$object))
     return(output)
   }
 }
@@ -567,11 +572,12 @@ ptbiserial_kproto <- function(object = NULL, data = NULL, k = NULL, s_d = NULL, 
     # find the optimal k, if it is ambiguously: sample
     k_m <- which(indices == max(indices))
     if(length(k_m)>1){k_m <- sample(k_m,1)}
-    k_opt <- indices[k_m]
+    k_opt <- as.integer(names(indices[k_m]))
+    index_opt <- indices[k_m]
     
     output <- switch(kp_obj,
-                     "all" = list("k_opt" = k_opt, "indices" = indices, "kp_obj" = trace_kp),
-                     "optimal" = list("k_opt" = k_opt, "indices" = indices, "kp_obj" = trace_kp[[k_m]]$object))
+                     "all" = list("k_opt" = k_opt, "index_opt" = index_opt, "indices" = indices, "kp_obj" = trace_kp),
+                     "optimal" = list("k_opt" = k_opt, "index_opt" = index_opt, "indices" = indices, "kp_obj" = trace_kp[[k_m]]$object))
     return(output)
   }
 }
@@ -667,11 +673,12 @@ silhouette_kproto <- function(object = NULL, data = NULL, k = NULL, kp_obj = "op
     # find the optimal k, if it is ambiguously: sample
     k_m <- which(indices == max(indices))
     if(length(k_m)>1){k_m <- sample(k_m,1)}
-    k_opt <- indices[k_m]
+    k_opt <- as.integer(names(indices[k_m]))
+    index_opt <- indices[k_m]
     
     output <- switch(kp_obj,
-                     "all" = list("k_opt" = k_opt, "indices" = indices, "kp_obj" = trace_kp),
-                     "optimal" = list("k_opt" = k_opt, "indices" = indices, "kp_obj" = trace_kp[[k_m]]$object))
+                     "all" = list("k_opt" = k_opt, "index_opt" = index_opt, "indices" = indices, "kp_obj" = trace_kp),
+                     "optimal" = list("k_opt" = k_opt, "index_opt" = index_opt, "indices" = indices, "kp_obj" = trace_kp[[k_m]]$object))
     return(output)
   }
 }
@@ -742,17 +749,17 @@ tau_kproto <- function(object = NULL, data = NULL, k = NULL, dists = NULL, kp_ob
     
     #calculate all kproto objects for k
     object <- kproto(x = data, k = k[1], keep.data = TRUE, ...)
-    trace_kp <- list(list("index" = tau_kproto(object = object, , dists = dists), 
+    trace_kp <- list(list("index" = tau_kproto(object = object, dists = dists), 
                           "k" = length(object$size), "object" = object))
     for(q in k[-1]){
       object <- kproto(x = data, k = q, keep.data = TRUE, ...)
       #save kproto object, if there isn't an object for this number of cluster
       if(!any(lapply(trace_kp, `[[`, 2) == length(object$size))){
-        trace_kp <- c(trace_kp, list(list("index" = tau_kproto(object = object, , dists = dists), 
+        trace_kp <- c(trace_kp, list(list("index" = tau_kproto(object = object, dists = dists), 
                                           "k" = length(object$size), "object" = object)))
       }else{
         # save kproto object if there is a clusterpartition with same number of cluster but different validation index
-        index_value <- tau_kproto(object = object, , dists = dists)
+        index_value <- tau_kproto(object = object, dists = dists)
         if(trace_kp[[which(unlist(lapply(trace_kp, `[[`, 2)) == 2)]]$index != index_value){
           trace_kp <- c(trace_kp, list(list("index" = index_value, "k" = length(object$size), "object" = object)))
         }
@@ -766,11 +773,12 @@ tau_kproto <- function(object = NULL, data = NULL, k = NULL, dists = NULL, kp_ob
     # find the optimal k, if it is ambiguously: sample
     k_m <- which(indices == max(indices))
     if(length(k_m)>1){k_m <- sample(k_m,1)}
-    k_opt <- indices[k_m]
+    k_opt <- as.integer(names(indices[k_m]))
+    index_opt <- indices[k_m]
     
     output <- switch(kp_obj,
-                     "all" = list("k_opt" = k_opt, "indices" = indices, "kp_obj" = trace_kp),
-                     "optimal" = list("k_opt" = k_opt, "indices" = indices, "kp_obj" = trace_kp[[k_m]]$object))
+                     "all" = list("k_opt" = k_opt, "index_opt" = index_opt, "indices" = indices, "kp_obj" = trace_kp),
+                     "optimal" = list("k_opt" = k_opt, "index_opt" = index_opt, "indices" = indices, "kp_obj" = trace_kp[[k_m]]$object))
     return(output)
   }
 }
@@ -853,6 +861,7 @@ tau_kproto <- function(object = NULL, data = NULL, k = NULL, dists = NULL, kp_ob
 #' 
 #' @return For computing the optimal number of clusters based on the choosen validation index for k-Prototype clustering the output contains:
 #' @return \item{k_opt}{optimal number of clusters (sampled in case of ambiguity)}
+#' @return \item{index_opt}{index value of the index optimal clustering}
 #' @return \item{indices}{calculated indices for \eqn{k=2,...,k_{max}}}
 #' @return \item{kp_obj}{if(kp_obj == "optimal") the kproto object of the index optimal clustering and if(kp_obj == "all") all kproto which were calculated}
 #' @return For computing the index-value for a given k-Prototype clustering the output contains:
@@ -883,14 +892,16 @@ tau_kproto <- function(object = NULL, data = NULL, k = NULL, dists = NULL, kp_ob
 #' x4 <- c(rnorm(n, mean = -muk), rnorm(n, mean = muk), rnorm(n, mean = -muk), rnorm(n, mean = muk))
 #' x <- data.frame(x1,x2,x3,x4)
 #' 
-#' # apply k prototypes
+#' 
+#' # calculate optimal number of cluster, index values and clusterpartition with Silhouette-index
+#' val <- validation_kproto(method = "silhouette", data = x, k = 3:5, nstart = 5)
+#' 
+#' 
+#' # apply k-prototypes
 #' kpres <- kproto(x, 4, keep.data = TRUE)
 #' 
 #' # calculate cindex-value for the given clusterpartition
 #' cindex_value <- validation_kproto(method = "cindex", object = kpres)
-#' 
-#' # calculate optimal number of cluster with Silhouette-index
-#' k_opt <- validation_kproto(method = "silhouette", data = x, k = 3:5, nstart = 5)
 #' 
 #' @rdname validation_kproto
 #' 
