@@ -51,12 +51,13 @@ test_that("resulting objects based on cindex are as expected",{
   expect_true(iv_cindex > 0)
   expect_true(iv_cindex < 1)
   
-  expect_is(ivk_cindex[[1]], "numeric")
+  expect_is(ivk_cindex[[1]], "integer")
   expect_true(length(ivk_cindex[[1]]) == 1)
-  expect_true(names(ivk_cindex[[1]]) %in% c(3:5))
+  expect_true(ivk_cindex[[1]] %in% c(3:5))
   expect_true(is.numeric(ivk_cindex[[2]]))
-  expect_true(length(ivk_cindex[[2]]) <= 3)
-  expect_equal(names(ivk_cindex[[1]]), names(which.min(ivk_cindex[[2]])))
+  expect_true(is.numeric(ivk_cindex[[3]]))
+  expect_true(length(ivk_cindex[[3]]) <= 3)
+  expect_equal(ivk_cindex[[1]], as.integer(names(which.min(ivk_cindex[[3]]))))
 }
 )
 
@@ -70,12 +71,13 @@ test_that("resulting objects based on dunn index are as expected",{
   expect_true(length(iv_dunn) == 1)
   expect_true(iv_dunn >= 0)
   
-  expect_is(ivk_dunn[[1]], "numeric")
+  expect_is(ivk_dunn[[1]], "integer")
   expect_true(length(ivk_dunn[[1]]) == 1)
-  expect_true(names(ivk_dunn[[1]]) %in% c(3:5))
+  expect_true(ivk_dunn[[1]] %in% c(3:5))
   expect_true(is.numeric(ivk_dunn[[2]]))
-  expect_true(length(ivk_dunn[[2]]) <= 3)
-  expect_equal(names(ivk_dunn[[1]]), names(which.max(ivk_dunn[[2]])))
+  expect_true(is.numeric(ivk_dunn[[3]]))
+  expect_true(length(ivk_dunn[[3]]) <= 3)
+  expect_equal(ivk_dunn[[1]], as.integer(names(which.max(ivk_dunn[[3]]))))
 }
 )
 
@@ -90,12 +92,13 @@ test_that("resulting objects based on gamma index are as expected",{
   expect_true(iv_gamma > -1)
   expect_true(iv_gamma <= 1)
   
-  expect_is(ivk_gamma[[1]], "numeric")
+  expect_is(ivk_gamma[[1]], "integer")
   expect_true(length(ivk_gamma[[1]]) == 1)
-  expect_true(names(ivk_gamma[[1]]) %in% c(3:5))
+  expect_true(ivk_gamma[[1]] %in% c(3:5))
   expect_true(is.numeric(ivk_gamma[[2]]))
-  expect_true(length(ivk_gamma[[2]]) <= 3)
-  expect_equal(names(ivk_gamma[[1]]), names(which.max(ivk_gamma[[2]])))
+  expect_true(is.numeric(ivk_gamma[[3]]))
+  expect_true(length(ivk_gamma[[3]]) <= 3)
+  expect_equal(ivk_gamma[[1]], as.integer(names(which.max(ivk_gamma[[3]]))))
 }
 )
 
@@ -110,12 +113,13 @@ test_that("resulting objects based on gplus index are as expected",{
   expect_true(iv_gplus >= 0)
   expect_true(iv_gplus < 1)
   
-  expect_is(ivk_gplus[[1]], "numeric")
+  expect_is(ivk_gplus[[1]], "integer")
   expect_true(length(ivk_gplus[[1]]) == 1)
-  expect_true(names(ivk_gplus[[1]]) %in% c(3:5))
+  expect_true(ivk_gplus[[1]] %in% c(3:5))
   expect_true(is.numeric(ivk_gplus[[2]]))
-  expect_true(length(ivk_gplus[[2]]) <= 3)
-  expect_equal(names(ivk_gplus[[1]]), names(which.min(ivk_gplus[[2]])))
+  expect_true(is.numeric(ivk_gplus[[3]]))
+  expect_true(length(ivk_gplus[[3]]) <= 3)
+  expect_equal(ivk_gplus[[1]], as.integer(names(which.min(ivk_gplus[[3]]))))
 }
 )
 
@@ -129,12 +133,13 @@ test_that("resulting objects based on mcclain index are as expected",{
   expect_true(length(iv_mcclain) == 1)
   expect_true(iv_mcclain >= 0)
   
-  expect_is(ivk_mcclain[[1]], "numeric")
+  expect_is(ivk_mcclain[[1]], "integer")
   expect_true(length(ivk_mcclain[[1]]) == 1)
-  expect_true(names(ivk_mcclain[[1]]) %in% c(3:5))
+  expect_true(ivk_mcclain[[1]] %in% c(3:5))
   expect_true(is.numeric(ivk_mcclain[[2]]))
-  expect_true(length(ivk_mcclain[[2]]) <= 3)
-  expect_equal(names(ivk_mcclain[[1]]), names(which.min(ivk_mcclain[[2]])))
+  expect_true(is.numeric(ivk_mcclain[[3]]))
+  expect_true(length(ivk_mcclain[[3]]) <= 3)
+  expect_equal(ivk_mcclain[[1]], as.integer(names(which.min(ivk_mcclain[[3]]))))
 }
 )
 
@@ -147,12 +152,13 @@ test_that("resulting objects based on ptbiserial index are as expected",{
   expect_is(iv_ptbiserial, "numeric")
   expect_true(length(iv_ptbiserial) == 1)
   
-  expect_is(ivk_ptbiserial[[1]], "numeric")
+  expect_is(ivk_ptbiserial[[1]], "integer")
   expect_true(length(ivk_ptbiserial[[1]]) == 1)
-  expect_true(names(ivk_ptbiserial[[1]]) %in% c(3:5))
+  expect_true(ivk_ptbiserial[[1]] %in% c(3:5))
   expect_true(is.numeric(ivk_ptbiserial[[2]]))
-  expect_true(length(ivk_ptbiserial[[2]]) <= 3)
-  expect_equal(names(ivk_ptbiserial[[1]]), names(which.max(ivk_ptbiserial[[2]])))
+  expect_true(is.numeric(ivk_ptbiserial[[3]]))
+  expect_true(length(ivk_ptbiserial[[3]]) <= 3)
+  expect_equal(ivk_ptbiserial[[1]], as.integer(names(which.max(ivk_ptbiserial[[3]]))))
 }
 )
 
@@ -167,12 +173,13 @@ test_that("resulting objects based on silhouette index are as expected",{
   expect_true(iv_silhouette >= -1)
   expect_true(iv_silhouette <= 1)
   
-  expect_is(ivk_silhouette[[1]], "numeric")
+  expect_is(ivk_silhouette[[1]], "integer")
   expect_true(length(ivk_silhouette[[1]]) == 1)
-  expect_true(names(ivk_silhouette[[1]]) %in% c(3:5))
+  expect_true(ivk_silhouette[[1]] %in% c(3:5))
   expect_true(is.numeric(ivk_silhouette[[2]]))
-  expect_true(length(ivk_silhouette[[2]]) <= 3)
-  expect_equal(names(ivk_silhouette[[1]]), names(which.max(ivk_silhouette[[2]])))
+  expect_true(is.numeric(ivk_silhouette[[3]]))
+  expect_true(length(ivk_silhouette[[3]]) <= 3)
+  expect_equal(ivk_silhouette[[1]], as.integer(names(which.max(ivk_silhouette[[3]]))))
 }
 )
 
@@ -187,12 +194,13 @@ test_that("resulting objects based on tau index are as expected",{
   expect_true(iv_tau >= -1)
   expect_true(iv_tau <= 1)
   
-  expect_is(ivk_tau[[1]], "numeric")
+  expect_is(ivk_tau[[1]], "integer")
   expect_true(length(ivk_tau[[1]]) == 1)
-  expect_true(names(ivk_tau[[1]]) %in% c(3:5))
+  expect_true(ivk_tau[[1]] %in% c(3:5))
   expect_true(is.numeric(ivk_tau[[2]]))
-  expect_true(length(ivk_tau[[2]]) <= 3)
-  expect_equal(names(ivk_tau[[1]]), names(which.max(ivk_tau[[2]])))
+  expect_true(is.numeric(ivk_tau[[3]]))
+  expect_true(length(ivk_tau[[3]]) <= 3)
+  expect_equal(ivk_tau[[1]], as.integer(names(which.max(ivk_tau[[3]]))))
 }
 )
 

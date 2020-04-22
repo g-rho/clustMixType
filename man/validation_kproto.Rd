@@ -36,6 +36,8 @@ For computing the optimal number of clusters based on the choosen validation ind
 
 \item{k_opt}{optimal number of clusters (sampled in case of ambiguity)}
 
+\item{index_opt}{index value of the index optimal clustering}
+
 \item{indices}{calculated indices for \eqn{k=2,...,k_{max}}}
 
 \item{kp_obj}{if(kp_obj == "optimal") the kproto object of the index optimal clustering and if(kp_obj == "all") all kproto which were calculated}
@@ -119,14 +121,16 @@ x3 <- c(rnorm(n, mean = -muk), rnorm(n, mean = muk), rnorm(n, mean = -muk), rnor
 x4 <- c(rnorm(n, mean = -muk), rnorm(n, mean = muk), rnorm(n, mean = -muk), rnorm(n, mean = muk))
 x <- data.frame(x1,x2,x3,x4)
 
-# apply k prototypes
+
+# calculate optimal number of cluster, index values and clusterpartition with Silhouette-index
+val <- validation_kproto(method = "silhouette", data = x, k = 3:5, nstart = 5)
+
+
+# apply k-prototypes
 kpres <- kproto(x, 4, keep.data = TRUE)
 
 # calculate cindex-value for the given clusterpartition
 cindex_value <- validation_kproto(method = "cindex", object = kpres)
-
-# calculate optimal number of cluster with Silhouette-index
-k_opt <- validation_kproto(method = "silhouette", data = x, k = 3:5, nstart = 5)
 
 }
 \references{
