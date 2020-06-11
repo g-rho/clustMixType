@@ -103,14 +103,15 @@ kproto <- function (x, ...)
 #' 
 #' @rdname kproto
 #' 
-#' @importFrom stats complete.cases 
+#' @importFrom stats complete.cases
+#' @importFrom tibble is_tibble 
 #' 
 #' @method kproto default
 #' @export 
 kproto.default <- function(x, k, lambda = NULL, iter.max = 100, nstart = 1, na.rm = TRUE, keep.data = TRUE, verbose = TRUE, ...){
   
   # enable input of tibbles
-  if(tibble::is_tibble(x) == TRUE){x <- as.data.frame(x)}
+  if(is_tibble(x) == TRUE){x <- as.data.frame(x)}
   
   # initial error checks
   if(!is.data.frame(x)) stop("x should be a data frame!")
