@@ -1,4 +1,7 @@
 
+clustMixType_0.2-6  2020-05-29  - enable input of tibbles
+                                - fix par(ask="FALSE") into par(ask=FALSE)
+                                - check done: no impact of NAs in predict or clprofiles
 clustMixType_0.2-5  2020-04-22  - fix output for validation indices: k_opt (integer) and index_opt (numeric) instead of named numeric k_opt 
 clustMixType_0.2-4  2020-04-16  - bug fix ln. 165f 
 				- assign cluster NA to obs. with NAs in all variables
