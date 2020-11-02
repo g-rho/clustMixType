@@ -9,6 +9,7 @@ validation_kproto(
   object = NULL,
   data = NULL,
   k = NULL,
+  lambda = NULL,
   kp_obj = "optimal",
   ...
 )
@@ -22,12 +23,13 @@ validation_kproto(
 
 \item{k}{Vector specifying the search range for optimum number of clusters; if \code{NULL} the range will set as \code{2:sqrt(n)}. Only required if \code{object == NULL} and neglected if \code{object != NULL}.}
 
+\item{lambda}{Factor to trade off between Euclidean distance of numeric variables and simple matching coefficient between categorical variables.}
+
 \item{kp_obj}{character either "optimal" or "all": Output of the index-optimal clustering (kp_obj == "optimal") or all computed clusterpartitions (kp_obj == "all"); only required if \code{object != NULL}.}
 
 \item{...}{Further arguments passed to \code{\link[clustMixType]{kproto}}, like:
 \itemize{
   \item \code{nstart}: If > 1 repetetive computations of \code{kproto} with random initializations are computed.
-  \item \code{lambda}: Factor to trade off between Euclidean distance of numeric variables and simple matching coefficient between categorical variables.
   \item \code{verbose}: Logical whether information about the cluster procedure should be given. Caution: If \code{verbose=FALSE}, the reduction of the number of clusters is not mentioned.
 }}
 }
