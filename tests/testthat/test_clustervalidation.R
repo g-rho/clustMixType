@@ -24,6 +24,7 @@ x <- data.frame(x1,x2,x3,x4)
 
 kpres <- kproto.default(x, 4, verbose = FALSE)
 kpres_w <- kproto.default(x, 4, keep.data = FALSE, verbose = FALSE)
+kpres_1 <- kproto.default(x, 1, keep.data = FALSE, verbose = FALSE)
 
 
 
@@ -37,6 +38,9 @@ test_that("checking input objects",{
   expect_error(validation_kproto(method = "cindex", data = x, k = -1:3))
   expect_error(validation_kproto(method = "cindex", data = x, k = 5:43))
   expect_error(validation_kproto(method = "cindex", data = NULL, object = kpres_w))
+  expect_error(validation_kproto(method = "cindex", data = NULL, object = kpres_1))
+  expect_error(validation_kproto(method = "cindex", data = x, k = 1))
+  expect_error(validation_kproto(method = "cindex", data = x, k = 1:3))
 }
 )
 

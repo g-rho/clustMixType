@@ -945,6 +945,20 @@ validation_kproto <- function(method = NULL, object = NULL, data = NULL, k = NUL
     if(all(!as.integer(k)==k)) stop("Elements of k must be type of integer")
   }
   
+  if(1 %in% k){
+    if(method %in% c("cindex", "mcclain", "ptbiserial")) stop(paste("Index calculation not possible for k = 1. As the", method, "index is based on the relation of within-cluster distances and between-cluster distances, choose k > 1."))
+    if(method %in% c("gamma", "gplus", "tau")) stop(paste("Index calculation not possible for k = 1. Since the", method, "index insists on comparing within-cluster distances and between-cluster distances, choose k > 1."))
+    if(method == "dunn") stop("Index calculation not possible for k = 1. Calculation of the dunn index requires the determination of the distance between two clusters, so you have to set k > 1.")
+    if(method == "silhouette") stop("Index calculation not possible for k = 1. The Silhouette index rates the average within-cluster distance for the own cluster and for the best alternative cluster for every object, so you have to set k > 1.")
+  }
+  if(length(object$size) == 1){
+    if(method %in% c("cindex", "mcclain", "ptbiserial")) stop(paste("Index calculation not possible for kproto-objects with only one cluster. As the", method, "index is based on the relation of within-cluster distances and between-cluster distances a kproto-object which has been computed with k > 1 is required."))
+    if(method %in% c("gamma", "gplus", "tau")) stop(paste("Index calculation not possible for kproto-objects with only one cluster. Since the", method, "index insists on comparing within-cluster distances and between-cluster distances a kproto-object which has been computed with k > 1 is required."))
+    if(method == "dunn") stop("Index calculation not possible for kproto-objects with only one cluster. Calculation of the dunn index requires the determination of the distance between two clusters. You have to insert a kproto-object which has been computed with k > 1.")
+    if(method == "silhouette") stop("Index calculation not possible for kproto-objects with only one cluster. The Silhouette index rates the average within-cluster distance for the own cluster and for the best alternative cluster for every object. You have to insert a kproto-object which has been computed with k > 1.")
+  }
+  
+  
   if(!(kp_obj %in% c("optimal","all"))) stop("kp_obj must either be optimal or all!")
   
   output <- switch(method,
