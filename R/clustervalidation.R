@@ -889,7 +889,7 @@ tau_kproto <- function(object = NULL, data = NULL, k = NULL, dists = NULL, kp_ob
 #'     \item Charrad, M., Ghazzali, N., Boiteau, V., Niknafs, A. (2014): 
 #'     NbClust: An R Package for Determining the Relevant Number of Clusters in a Data Set. 
 #'     \emph{Journal of Statistical Software, Vol 61, Issue 6}.
-#'     \href{http://www.jstatsoft.org/v61/i06/}{\emph{www.jstatsoft.org}}.
+#'     \href{https://www.jstatsoft.org/v61/i06/}{\emph{www.jstatsoft.org}}.
 #'   }
 #'
 #' @examples

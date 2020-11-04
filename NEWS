@@ -1,4 +1,4 @@
-clustMixType_0.2-9  2020-11-03  - update error-messages, if index calculation with k = 1 cluster or an kproto-object with only one cluster.
+clustMixType_0.2-9  2020-11-04  - update error-messages, if index calculation with k = 1 cluster or an kproto-object with only one cluster.
 clustMixType_0.2-8  2020-11-02  - personalized lambda input with validation_kproto added
 clustMixType_0.2-7  2020-06-11  - tibble import added to namespace (ln.107 kprototypes.R) and description 
 clustMixType_0.2-6  2020-05-29  (not built --> v0.2-7)
