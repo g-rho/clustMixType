@@ -142,7 +142,7 @@ cindex_kproto <- function(object = NULL, data = NULL, k = NULL, S_sort = NULL, k
       }else{
         # save kproto object if there is a clusterpartition with same number of cluster but different validation index
         index_value <- cindex_kproto(object = object, S_sort = S_sort)
-        if(trace_kp[[which(unlist(lapply(trace_kp, `[[`, 2)) == 2)]]$index != index_value){
+        if(!(index_value %in% unlist(lapply(trace_kp, `[[`, 1))[which(unlist(lapply(trace_kp, `[[`, 2)) == length(object$size))])){
           trace_kp <- c(trace_kp, list(list("index" = index_value, "k" = length(object$size), "object" = object)))
         }
       }
@@ -237,7 +237,7 @@ dunn_kproto <- function(object = NULL, data = NULL, k = NULL, kp_obj = "optimal"
       }else{
         # save kproto object if there is a clusterpartition with same number of cluster but different validation index
         index_value <- dunn_kproto(object = object)
-        if(trace_kp[[which(unlist(lapply(trace_kp, `[[`, 2)) == 2)]]$index != index_value){
+        if(!(index_value %in% unlist(lapply(trace_kp, `[[`, 1))[which(unlist(lapply(trace_kp, `[[`, 2)) == length(object$size))])){
           trace_kp <- c(trace_kp, list(list("index" = index_value, "k" = length(object$size), "object" = object)))
         }
       }
@@ -330,7 +330,7 @@ gamma_kproto <- function(object = NULL, data = NULL, k = NULL, dists = NULL, kp_
       }else{
         # save kproto object if there is a clusterpartition with same number of cluster but different validation index
         index_value <- gamma_kproto(object = object, dists = dists)
-        if(trace_kp[[which(unlist(lapply(trace_kp, `[[`, 2)) == 2)]]$index != index_value){
+        if(!(index_value %in% unlist(lapply(trace_kp, `[[`, 1))[which(unlist(lapply(trace_kp, `[[`, 2)) == length(object$size))])){
           trace_kp <- c(trace_kp, list(list("index" = index_value, "k" = length(object$size), "object" = object)))
         }
       }
@@ -424,7 +424,7 @@ gplus_kproto <- function(object = NULL, data = NULL, k = NULL, dists = NULL, kp_
       }else{
         # save kproto object if there is a clusterpartition with same number of cluster but different validation index
         index_value <- gplus_kproto(object = object, dists = dists)
-        if(trace_kp[[which(unlist(lapply(trace_kp, `[[`, 2)) == 2)]]$index != index_value){
+        if(!(index_value %in% unlist(lapply(trace_kp, `[[`, 1))[which(unlist(lapply(trace_kp, `[[`, 2)) == length(object$size))])){
           trace_kp <- c(trace_kp, list(list("index" = index_value, "k" = length(object$size), "object" = object)))
         }
       }
@@ -481,7 +481,7 @@ mcclain_kproto <- function(object = NULL, data = NULL, k = NULL, kp_obj = "optim
       }else{
         # save kproto object if there is a clusterpartition with same number of cluster but different validation index
         index_value <- mcclain_kproto(object = object)
-        if(trace_kp[[which(unlist(lapply(trace_kp, `[[`, 2)) == 2)]]$index != index_value){
+        if(!(index_value %in% unlist(lapply(trace_kp, `[[`, 1))[which(unlist(lapply(trace_kp, `[[`, 2)) == length(object$size))])){
           trace_kp <- c(trace_kp, list(list("index" = index_value, "k" = length(object$size), "object" = object)))
         }
       }
@@ -568,7 +568,7 @@ ptbiserial_kproto <- function(object = NULL, data = NULL, k = NULL, s_d = NULL, 
       }else{
         # save kproto object if there is a clusterpartition with same number of cluster but different validation index
         index_value <- ptbiserial_kproto(object = object, s_d = s_d)
-        if(trace_kp[[which(unlist(lapply(trace_kp, `[[`, 2)) == 2)]]$index != index_value){
+        if(!(index_value %in% unlist(lapply(trace_kp, `[[`, 1))[which(unlist(lapply(trace_kp, `[[`, 2)) == length(object$size))])){
           trace_kp <- c(trace_kp, list(list("index" = index_value, "k" = length(object$size), "object" = object)))
         }
       }
@@ -669,7 +669,7 @@ silhouette_kproto <- function(object = NULL, data = NULL, k = NULL, kp_obj = "op
       }else{
         # save kproto object if there is a clusterpartition with same number of cluster but different validation index
         index_value <- silhouette_kproto(object = object)
-        if(trace_kp[[which(unlist(lapply(trace_kp, `[[`, 2)) == 2)]]$index != index_value){
+        if(!(index_value %in% unlist(lapply(trace_kp, `[[`, 1))[which(unlist(lapply(trace_kp, `[[`, 2)) == length(object$size))])){
           trace_kp <- c(trace_kp, list(list("index" = index_value, "k" = length(object$size), "object" = object)))
         }
       }
@@ -771,7 +771,7 @@ tau_kproto <- function(object = NULL, data = NULL, k = NULL, dists = NULL, kp_ob
       }else{
         # save kproto object if there is a clusterpartition with same number of cluster but different validation index
         index_value <- tau_kproto(object = object, dists = dists)
-        if(trace_kp[[which(unlist(lapply(trace_kp, `[[`, 2)) == 2)]]$index != index_value){
+        if(!(index_value %in% unlist(lapply(trace_kp, `[[`, 1))[which(unlist(lapply(trace_kp, `[[`, 2)) == length(object$size))])){
           trace_kp <- c(trace_kp, list(list("index" = index_value, "k" = length(object$size), "object" = object)))
         }
       }
