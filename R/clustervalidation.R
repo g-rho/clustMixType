@@ -884,7 +884,7 @@ tau_kproto <- function(object = NULL, data = NULL, k = NULL, dists = NULL, kp_ob
 #'     \item Aschenbruck, R., Szepannek, G. (2020): 
 #'     Cluster Validation for Mixed-Type Data. 
 #'     \emph{Archives of Data Science, Series A, Vol 6, Issue 1}.
-#'     \doi{10.5445/KSP/1000098011/02}.
+#'     \href{https://publikationen.bibliothek.kit.edu/1000120412}{\emph{https://www.archivesofdatascience.org/journals/series_a/publications#articles}}.
 #'     
 #'     \item Charrad, M., Ghazzali, N., Boiteau, V., Niknafs, A. (2014): 
 #'     NbClust: An R Package for Determining the Relevant Number of Clusters in a Data Set. 
