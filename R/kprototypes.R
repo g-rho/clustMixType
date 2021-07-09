@@ -119,7 +119,7 @@ kproto.default <- function(x, k, lambda = NULL, iter.max = 100, nstart = 1, na.r
   if(iter.max < 1 | nstart < 1) stop("iter.max and nstart must not be specified < 1!")
   if(!is.null(lambda)){
     if(any(lambda < 0)) stop("lambda must be specified >= 0!")
-    if(!any(lambda > 0)) stop("lambda must be specified > 0 for at least one variable!")
+    if(!any(lambda > 0)) stop("lambda must be specified > 0 for at least two variable!")
     }
   # check for numeric and factor variables
   numvars <- sapply(x, is.numeric)
