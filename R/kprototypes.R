@@ -193,7 +193,14 @@ kproto.default <- function(x, k, lambda = NULL, iter.max = 100, nstart = 1, na.r
   if(k < 1) stop("Number of clusters k must not be smaller than 1!")
   
   # automatic calculation of lambda
-  if(length(lambda) > 1) {if(length(lambda) != sum(c(numvars,catvars))) stop("If lambda is a vector, its length should be the sum of numeric and factor variables in the data frame!")}
+  if(length(lambda) > 1){
+    if(length(lambda) != sum(c(numvars,catvars))) stop("If lambda is a vector, its length should be the sum of numeric and factor variables in the data frame!")
+    # warning for variable selection via lambda (which results in no numvars or no catvars)
+    if(all(!as.logical(numvars*lambda))) warning("As a result of the choice of lambda: No numeric variables in x! Better try using kmodes() from package klaR...\n")
+    if(all(!as.logical(catvars*lambda))) warning("As a result of the choice of lambda: No factor variables in x! Better try using kmeans()...\n")
+  }else{
+    if(lambda == 0) stop("lambda has to be a value != 0. For automatic calculation use lambda = NULL (default setting)!")
+    }
   if(is.null(lambda)){
     if(anynum & anyfact){
       vnum <- mean(sapply(x[,numvars, drop = FALSE], var, na.rm = TRUE))
