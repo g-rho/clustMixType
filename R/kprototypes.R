@@ -258,6 +258,7 @@ kproto.default <- function(x, k, lambda = NULL, iter.max = 100, nstart = 1, na.r
       #a0 <- proc.time()[3]      
       #d1 <- apply(x[,numvars],1, function(z) sum((z-protos[i,numvars])^2)) # euclidean for numerics
       d1 <- (x[,numvars, drop = FALSE] - matrix(rep(as.numeric(protos[i, numvars, drop = FALSE]), nrows), nrow=nrows, byrow=T))^2
+      d1[is.na(d1)] <- 0
       if(length(lambda) == 1) d1 <- rowSums(d1, na.rm = TRUE)
       if(length(lambda) > 1) d1 <- as.matrix(d1) %*% lambda[numvars]
       #a1 <- proc.time()[3]      
