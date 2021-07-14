@@ -199,7 +199,7 @@ kproto.default <- function(x, k, lambda = NULL, iter.max = 100, nstart = 1, na.r
     if(all(!as.logical(numvars*lambda))) warning("As a result of the choice of lambda: No numeric variables in x! Better try using kmodes() from package klaR...\n")
     if(all(!as.logical(catvars*lambda))) warning("As a result of the choice of lambda: No factor variables in x! Better try using kmeans()...\n")
   }else{
-    if(lambda == 0) stop("lambda has to be a value != 0. For automatic calculation use lambda = NULL (default setting)!")
+    if(length(lambda) == 1) {if(lambda == 0) stop("lambda has to be a value != 0. For automatic calculation use lambda = NULL (default setting)!")}
     }
   if(is.null(lambda)){
     if(anynum & anyfact){
