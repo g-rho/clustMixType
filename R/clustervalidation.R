@@ -11,6 +11,7 @@ create.S_w_kpa <- function(object){
 
       d1 <- (x_k[rep(1:(object$size[k]-1),times=(object$size[k]-1):1, each=1), numvars, drop = FALSE] -
                x_k[unlist(lapply(2:object$size[k], seq, to=object$size[k])), numvars, drop = FALSE])^2
+      d1[is.na(d1)] <- 0
       if(length(object$lambda) == 1) d1 <- rowSums(d1, na.rm = TRUE)
       if(length(object$lambda) > 1) d1 <- as.matrix(d1) %*% object$lambda[numvars]
       
@@ -38,6 +39,7 @@ create.S_b_kpa <- function(object){
       
       d1 <- (x_k[rep(1:object$size[k], each=object$size[l]), numvars, drop = FALSE] -
                x_l[rep(1:object$size[l], times=object$size[k]), numvars, drop = FALSE])^2
+      d1[is.na(d1)] <- 0
       if(length(object$lambda) == 1) d1 <- rowSums(d1, na.rm = TRUE)
       if(length(object$lambda) > 1) d1 <- as.matrix(d1) %*% object$lambda[numvars]
 
@@ -60,10 +62,12 @@ create.dist_kpa <- function(lambda = NULL, data1, data2){
   catvars <- sapply(data, is.factor)
   
   d1 <- (data[1,numvars, drop = FALSE]-data[2,numvars, drop = FALSE])^2
+  d1[is.na(d1)] <- 0
   if(length(lambda) == 1) d1 <- sum(d1)
   if(length(lambda) > 1) d1 <- as.matrix(d1) %*% lambda[numvars]
   
   d2 <- sapply(which(catvars), function(j) return(data[1,j] != data[2,j]))
+  d2[is.na(d2)] <- FALSE
   if(length(lambda) == 1) d2 <- lambda * sum(d2)
   if(length(lambda) > 1) d2 <- as.matrix(d2) %*% lambda[catvars]
   
@@ -612,11 +616,13 @@ silhouette_kproto <- function(object = NULL, data = NULL, k = NULL, kp_obj = "op
     for(i in 1:nrows){
       #distances of the numeric variables
       d1 <- (x[,numvars, drop = FALSE] - matrix(rep(as.numeric(protos[i, numvars, drop = FALSE]), nrows), nrow = nrows, byrow = TRUE))^2
+      d1[is.na(d1)] <- 0
       if(length(lambda) == 1) d1 <- rowSums(d1)
       if(length(lambda) > 1) d1 <- d1 %*% lambda[numvars]
       
       #distances of the categorical variances
       d2 <- sapply(which(catvars), function(j) return(x[,j] != rep(protos[i,j], nrows)))
+      d2[is.na(d2)] <- FALSE
       if(length(lambda) == 1) d2 <- lambda * rowSums(d2)
       if(length(lambda) > 1) d2 <- d2 %*% lambda[catvars]
       
