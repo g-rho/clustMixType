@@ -195,7 +195,7 @@ dunn_kproto <- function(object = NULL, data = NULL, k = NULL, kp_obj = "optimal"
         min_CiCj[i,j] <- min_ij
       }
     }
-    Zaehler <- min(min_CiCj[min_CiCj > 0])
+    numerator <- min(min_CiCj[min_CiCj > 0])
     
     #determine diam(C_k)
     max_diam <- numeric(k)
@@ -214,10 +214,10 @@ dunn_kproto <- function(object = NULL, data = NULL, k = NULL, kp_obj = "optimal"
         max_diam[p] <- max_ij
       }
     }
-    Nenner <- max(max_diam)
+    denominator <- max(max_diam)
     
-    if(is.finite(Zaehler/Nenner)){
-      return(Zaehler/Nenner)
+    if(is.finite(numerator/denominator)){
+      return(numerator/denominator)
     }else{
       return(NA)
     }
@@ -651,7 +651,7 @@ silhouette_kproto <- function(object = NULL, data = NULL, k = NULL, kp_obj = "op
       for(i in which(cluster %in% as.integer(which(table(cluster) == 1)))){
         s[i] <- 0
       }
-      cat(length(which(cluster %in% as.integer(which(table(cluster) == 1))))," Cluster mit nur einem Element\n")
+      cat(length(which(cluster %in% as.integer(which(table(cluster) == 1))))," cluster with only one observation\n")
     }
     
     index <- mean(s)
