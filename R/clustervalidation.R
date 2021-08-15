@@ -174,6 +174,15 @@ dunn_kproto <- function(object = NULL, data = NULL, k = NULL, kp_obj = "optimal"
   
   if(!is.null(object)){
     if(is.null(object$data)) stop("object should have the original data included (kproto(..., keep.data = TRUE))")
+    numvars <- sapply(object$data, is.numeric)
+    cond <- all(!as.logical(numvars*object$lambda))
+  }else{
+    numvars <- sapply(data, is.numeric)
+    cond <- all(!as.logical(numvars*lambda))
+  }
+  if(cond) message("As a result of the choice of lambda: No numeric variables in x! Index calculation might result in NA...\n")
+  
+  if(!is.null(object)){
     
     k <- length(object$size)
     
@@ -195,7 +204,13 @@ dunn_kproto <- function(object = NULL, data = NULL, k = NULL, kp_obj = "optimal"
         min_CiCj[i,j] <- min_ij
       }
     }
-    numerator <- min(min_CiCj[min_CiCj > 0])
+    
+    if(length(min_CiCj[min_CiCj > 0]) > 0){
+      numerator <- min(min_CiCj[min_CiCj > 0])
+    }else{
+      return(NA)
+    }
+    
     
     #determine diam(C_k)
     max_diam <- numeric(k)
@@ -252,7 +267,8 @@ dunn_kproto <- function(object = NULL, data = NULL, k = NULL, kp_obj = "optimal"
     names(indices) <- lapply(trace_kp, `[[`, 2)
     
     # find the optimal k, if it is ambiguously: sample
-    k_m <- which(indices == max(indices))
+    if(all(is.na(indices))){return(NA)} # returning NA if dunn index couldn't be calculated (for all k), otherwise choose partition with highest index value
+    k_m <- which(indices == max(indices, na.rm = TRUE))
     if(length(k_m)>1){k_m <- sample(k_m,1)}
     k_opt <- as.integer(names(indices[k_m]))
     index_opt <- indices[k_m]
@@ -645,7 +661,13 @@ silhouette_kproto <- function(object = NULL, data = NULL, k = NULL, kp_obj = "op
     for(i in 1:nrows){
       a[i] <- cluster_dists[i,cluster[i]]
       b[i] <- min(cluster_dists[i,-cluster[i]])
-      s[i] <- (b[i] - a[i])/max(a[i],b[i])
+      
+      #special case: a[i]=0 and b[i]=0 => s = 0, since x[i] lies equally far away (distance = 0) from both the clusters
+      if(max(a[i],b[i]) == 0){
+        s[i] <- 0
+      }else{
+        s[i] <- (b[i] - a[i])/max(a[i],b[i])
+      }
     }
     if(any(table(cluster) == 1)){
       for(i in which(cluster %in% as.integer(which(table(cluster) == 1)))){
@@ -686,7 +708,7 @@ silhouette_kproto <- function(object = NULL, data = NULL, k = NULL, kp_obj = "op
     names(indices) <- lapply(trace_kp, `[[`, 2)
     
     # find the optimal k, if it is ambiguously: sample
-    k_m <- which(indices == max(indices))
+    k_m <- which(indices == max(indices, na.rm = TRUE))
     if(length(k_m)>1){k_m <- sample(k_m,1)}
     k_opt <- as.integer(names(indices[k_m]))
     index_opt <- indices[k_m]
