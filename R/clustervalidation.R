@@ -187,7 +187,7 @@ dunn_kproto <- function(object = NULL, data = NULL, k = NULL, kp_obj = "optimal"
     k <- length(object$size)
     
     #determine d(C_i,C_j)
-    min_CiCj <- matrix(numeric(k*k),ncol = k,nrow = k)
+    min_CiCj <- matrix(numeric(k*k), ncol = k, nrow = k)
     for(i in 1:(k-1)){
       xi <- object$data[which(object$cluster == i),]
       for(j in (i+1):k){
@@ -269,7 +269,7 @@ dunn_kproto <- function(object = NULL, data = NULL, k = NULL, kp_obj = "optimal"
     # find the optimal k, if it is ambiguously: sample
     if(all(is.na(indices))){return(NA)} # returning NA if dunn index couldn't be calculated (for all k), otherwise choose partition with highest index value
     k_m <- which(indices == max(indices, na.rm = TRUE))
-    if(length(k_m)>1){k_m <- sample(k_m,1)}
+    if(length(k_m)>1){k_m <- sample(k_m, 1)}
     k_opt <- as.integer(names(indices[k_m]))
     index_opt <- indices[k_m]
     
@@ -659,15 +659,21 @@ silhouette_kproto <- function(object = NULL, data = NULL, k = NULL, kp_obj = "op
     b <- numeric(nrows)
     s <- numeric(nrows)
     for(i in 1:nrows){
-      a[i] <- cluster_dists[i,cluster[i]]
-      b[i] <- min(cluster_dists[i,-cluster[i]])
-      
-      #special case: a[i]=0 and b[i]=0 => s = 0, since x[i] lies equally far away (distance = 0) from both the clusters
-      if(max(a[i],b[i]) == 0){
-        s[i] <- 0
+      if(is.na(cluster[i])){
+        # special case: no cluster assignment cluster[i] (usually resulting of all variables NA in x[i])
+        s[i] <- NA
       }else{
-        s[i] <- (b[i] - a[i])/max(a[i],b[i])
+        a[i] <- cluster_dists[i, cluster[i]]
+        b[i] <- min(cluster_dists[i, -cluster[i]])
+        
+        if(max(a[i], b[i], na.rm = TRUE) == 0){
+          # special case: a[i]=0 and b[i]=0 => s = 0, since x[i] lies equally far away (distance = 0) from both the clusters
+          s[i] <- 0
+        }else{
+          s[i] <- (b[i] - a[i])/max(a[i],b[i], na.rm = TRUE)
+        }
       }
+      
     }
     if(any(table(cluster) == 1)){
       for(i in which(cluster %in% as.integer(which(table(cluster) == 1)))){
@@ -676,7 +682,7 @@ silhouette_kproto <- function(object = NULL, data = NULL, k = NULL, kp_obj = "op
       cat(length(which(cluster %in% as.integer(which(table(cluster) == 1))))," cluster with only one observation\n")
     }
     
-    index <- mean(s)
+    index <- mean(s, na.rm = TRUE)
     
     return(index)
   }else{
@@ -753,7 +759,11 @@ tau_kproto <- function(object = NULL, data = NULL, k = NULL, dists = NULL, kp_ob
     n <- nrow(object$data)
     N_t <- n * (n - 1)/2
     M <- combn(1:n, m = 2)
-    M <- rbind(M,apply(X = M, MARGIN = 2, function(x) if(object$cluster[x[1]] == object$cluster[x[2]]){return(1)}else{return(-1)}))
+    M <- rbind(M, apply(X = M, MARGIN = 2, function(x){
+      if(any(is.na(c(object$cluster[x[1]], object$cluster[x[2]])))){return(-1)}else{
+        if(object$cluster[x[1]] == object$cluster[x[2]]){return(1)}else{return(-1)}
+      }
+    }))
     t <- 0
     for(i in 1:(ncol(M)-1)){
       t <- t + length(which(M[3,i]*M[3,-(1:i)] > 0))
