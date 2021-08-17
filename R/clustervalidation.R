@@ -338,7 +338,7 @@ gamma_kproto <- function(object = NULL, data = NULL, k = NULL, dists = NULL, kp_
     index <- numeric(n)
     
     #calculate all kproto objects for k
-    object <- kproto(x = data, k = k[1], keep.data = TRUE, ...)
+    object <- kproto(x = data, k = k[1], keep.data = TRUE,  lambda = lambda, ...)
     trace_kp <- list(list("index" = gamma_kproto(object = object, dists = dists), 
                           "k" = length(object$size), "object" = object))
     for(q in k[-1]){
