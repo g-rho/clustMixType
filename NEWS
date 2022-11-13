@@ -1,3 +1,11 @@
+...tbds:			- create good example for kproto_gower
+				- add testthat (& check .Rd file(
+				- remove commented chunks
+				- check impact on validation_kproto
+
+clustMixType_0.3-1  2022-11-13  - kproto_gower.R added (internally called by kproto)
+                                - impacts on kproto (new type argument), print.kproto and predict.kproto 
+
 clustMixType_0.2-15 2021-08-16  - validation_kproto: bug fix for special case of variable selection by lambda for no mixed-type data
                                 - few minor bug fixes for special cases with missing values
 clustMixType_0.2-14 2021-07-14  - bug fix of bug fix (ln.202): check for lambda == 0 only if length(lambda) == 1 (otherwise error for is.null(lambda))  
