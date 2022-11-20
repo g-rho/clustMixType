@@ -16,8 +16,9 @@
 #' In case of \code{na.rm = FALSE}: for each observation variables with missings are ignored 
 #' (i.e. only the remaining variables are considered for distance computation). 
 #' In consequence for observations with missings this might result in a change of variable's weighting compared to the one specified
-#' by \code{lambda}. Further note: For these observations distances to the prototypes will typically be smaller as they are based 
+#' by \code{lambda}. For these observations distances to the prototypes will typically be smaller as they are based 
 #' on fewer variables.
+#' For \code{type = "gower"} cf. \code{\link{kproto_gower}}.
 #' 
 #' @keywords classif 
 #' @keywords cluster
@@ -38,10 +39,11 @@ kproto <- function (x, ...)
 #' the order must correspond to the order of the variables in the data. In this case all variables' distances will be multiplied by 
 #' their corresponding lambda value.
 #' @param iter.max Maximum number of iterations if no convergence before.
-#' @param nstart If > 1 repetetive computations with random initializations are computed and the result with minimum tot.dist is returned.
+#' @param nstart If > 1 repetitive computations with random initializations are computed and the result with minimum tot.dist is returned.
 #' @param na.rm A logical value indicating whether NA values should be stripped before the computation proceeds.
 #' @param keep.data Logical whether original should be included in the returned object.
-#' @param verbose Logical whether information about the cluster procedure should be given. Caution: If \code{verbose=FALSE}, the reduction of the number of clusters is not mentioned.
+#' @param verbose Logical whether additional information about process should be printed. 
+#' Caution: For \code{verbose=FALSE}, if the number of clusters is reduced during the iterations it will not mentioned.
 #' @param \dots Currently not used.
 #
 #' @return \code{\link{kmeans}} like object of class \code{kproto}:

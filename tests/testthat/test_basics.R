@@ -107,3 +107,53 @@ kpres <- kproto(x = x5, k = prototypes, na.rm = FALSE)
 test_that("handling all NAs in variable in a cluster.",{
   expect_equal(kpres$centers[2,2], prototypes[2,2])}
 )
+
+
+# test gower extension
+
+kpres <- kproto(x = x, k = 4, type = "gower")
+test_that("Type = gower can be called instead of standard.",{
+  expect_equal(kpres$type, "gower")}
+)
+
+clusid <- rep(1:4, each = n)
+muk    <- 2
+# numeric
+mus <- c(rep(-muk, n), rep(-muk, n), rep(muk, n), rep(muk, n))
+x1  <- rnorm(4*n) + mus
+# ordered factor
+mus <- c(rep(-muk, n),rep(muk, n),rep(-muk, n),rep(muk, n))
+x2 <- rnorm(4*n) + mus
+quants <- quantile(x2, seq(0, 1, length.out = (8+1)))
+quants[1] <- -Inf
+quants[length(quants)] <- Inf
+x2 <- as.ordered(cut(x2, quants))
+x <- data.frame(x1, x2)
+
+kpres <- kproto(x = x, k = 4)
+test_that("Standard still works if ordered factors.",{
+  expect_equal(kpres$type, "standard")}
+)
+
+kpres <- kproto(x = x, k = 4, type = "standard")
+test_that("Standard still works if ordered factors.",{
+  expect_equal(kpres$type, "standard")}
+)
+
+kpres <- kproto(x = x, k = 4, type = "gower")
+test_that("Type = gower will be called.",{
+  expect_equal(kpres$type, "gower")}
+)
+
+xx <- x
+xx[,3] <- factor(x[,2], ordered = F)
+kpres <- kproto(x = xx, k = 4, type = "gower")
+test_that("Prototypes for ordered factor variables using gower extension.",{
+  expect_equal(class(kpres$centers[,2])[1], "ordered")}
+)
+
+test_that("Prototypes for (unordered) factor variables using gower extension.",{
+  expect_equal(class(kpres$centers[,3]), "factor")}
+)
+
+

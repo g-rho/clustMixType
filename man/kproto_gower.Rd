@@ -63,7 +63,7 @@ Higher values than \code{nstart = 1} can be specified within \code{kproto} which
 several times.
 For Gower dissimilarity range-normalized absolute distances from the cluster median 
 are computed for the numeric variables (and for the ranks of the ordered factors respectively). 
-For factors simple machting distance is used as in the original k prototypes algorithm. 
+For factors simple matching distance is used as in the original k prototypes algorithm. 
 The prototypes are given by the median for numeric variables, the mode for factors and the level with the closest rank 
 to the median rank of the corresponding cluster.
 In case of \code{na.rm = FALSE}: for each observation variables with missings are ignored 
@@ -73,50 +73,43 @@ by \code{lambda}. Further note: For these observations distances to the prototyp
 on fewer variables.
 }
 \examples{
-# generate toy data with
 
-n   <- 100
-prb <- 0.9
-muk <- 1.5 
-clusid <- rep(1:4, each = n)
-k.ord <- 10
-
-# cl  x1  x2  x3
-# 1   A   AB  AB
-# 2   B   A   AB
-# 3   AB  B   A
-# 4   AB  AB  B
-
-# numeric
-mus <- c(rep(-muk, n),
-         rep(muk, n),
-         sign(runif(n)-0.5) * muk,
-         sign(runif(n)-0.5) * muk)
-x1 <- rnorm(4*n) + mus
-
-# factor
-x2 <- c(sample(c("A","B"), n, replace = TRUE, prob = c(0.5, 0.5)),
-        sample(c("A","B"), n, replace = TRUE, prob = c(prb, 1-prb)),
-        sample(c("A","B"), n, replace = TRUE, prob = c(1-prb, prb)),
-        sample(c("A","B"), n, replace = TRUE, prob = c(0.5, 0.5)))
-x2 <- as.factor(x2)
-
-# ordered factor
-mus <- c(sign(runif(n)-0.5) * muk,
-         sign(runif(n)-0.5) * muk,
-         rep(-muk, n),
-         rep(muk, n))
-x3 <- rnorm(4*n) + mus
-quants <- quantile(x3, seq(0, 1, length.out = (k.ord+1)))
-quants[1] <- -Inf
-quants[length(quants)] <- Inf
-x3 <- as.ordered(cut(x3, quants))
-
-x <- data.frame(x1, x2, x3)
-
-# apply k-prototypes
-kpres <- kproto(x, 4)
-clprofiles(kpres, x)
+datasim <- function(n = 100, k.ord = 2, muk = 1.5){
+  clusid <- rep(1:4, each = n)
+  # numeric
+  mus <- c(rep(-muk, n),
+           rep(-muk, n),
+           rep(muk, n),
+           rep(muk, n))
+           x1 <- rnorm(4*n) + mus
+ # ordered factor
+  mus <- c(rep(-muk, n),
+           rep(muk, n),
+           rep(-muk, n),
+           rep(muk, n))
+ x2 <- rnorm(4*n) + mus
+ # ordered factor
+ 
+ quants <- quantile(x2, seq(0, 1, length.out = (k.ord+1)))
+ quants[1] <- -Inf
+ quants[length(quants)] <- Inf
+ x2 <- as.ordered(cut(x2, quants))
+ x <- data.frame(x1, x2)
+ return(x)
+ }
+ 
+ n     <- 100
+ x     <- datasim(n = n, k.ord = 10, muk = 2)
+ truth <- rep(1:4, each = n)
+ 
+ # calling the internal kproto_gower() directly 
+ kgres <- kproto_gower(x, 4, verbose = F)
+ 
+ # calling kproto gower via kproto:
+ kgres2 <- kproto(x, 4, verbose = F, type = "gower", nstart = 10)
+ 
+ table(kgres$cluster, truth)
+ clprofiles(kgres, x)
  
 }
 \references{

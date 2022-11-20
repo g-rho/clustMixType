@@ -967,6 +967,10 @@ tau_kproto <- function(object = NULL, data = NULL, k = NULL, dists = NULL, kp_ob
 #' 
 #' @export
 validation_kproto <- function(method = NULL, object = NULL, data = NULL, k = NULL, lambda = NULL, kp_obj = "optimal", ...){
+
+# tbd...    
+if(object$type == "gower") stop("validation_kproto currently only implemented for type == 'gower'")  
+if(type == "gower") stop("validation_kproto currently only implemented for type == 'gower'")  
   
   if(is.null(method)) stop("validation methode must be choosen!")
   if(!(method %in% c("cindex", "dunn", "gamma", "gplus", "mcclain", "ptbiserial", "silhouette", "tau"))) stop("choose one of these methods: cindex, dunn, gamma, gplus, mcclain, ptbiserial, silhouette, tau")

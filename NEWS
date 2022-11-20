@@ -1,9 +1,16 @@
-...tbds:			- create good example for kproto_gower
-				- add testthat (& check .Rd file(
-				- remove commented chunks
-				- check impact on validation_kproto
+...tbds:			- update validation_kproto
 
-clustMixType_0.3-1  2022-11-13  - kproto_gower.R added (internally called by kproto)
+  				- check: why is clprofiles not plot.kproto (extra args?) 
+                                         ...maybe add plot.kproto that calls clprofiles with default params 
+                                - check NA treatment (argument + remove of NAs, ln 133ff + are they ignored if na.rm=F?)
+				- check .Rd file
+
+clustMixType_0.3-2  2022-11-19  - example added to .Rd     
+				- commented chunks removed
+                                - some tests for gower extension added
+                                - error check in validation_kproto() ln. 972f as long as if it is not implemented for type == "gower"
+
+clustMixType_0.3-1  2022-11-13  - kproto_gower.R added (internally called by kproto)    (...not built --> v0.3-2)
                                 - impacts on kproto (new type argument), print.kproto and predict.kproto 
 
 clustMixType_0.2-15 2021-08-16  - validation_kproto: bug fix for special case of variable selection by lambda for no mixed-type data
@@ -17,7 +24,7 @@ clustMixType_0.2-9  2020-11-04  - update error-messages, if index calculation wi
 clustMixType_0.2-8  2020-11-02  - personalized lambda input with validation_kproto added
 clustMixType_0.2-7  2020-06-11  - tibble import added to namespace (ln.107 kprototypes.R) and description 
 clustMixType_0.2-6  2020-05-29  (not built --> v0.2-7)
-				                        - enable input of tibbles
+				- enable input of tibbles
                                 - fix par(ask="FALSE") into par(ask=FALSE)
                                 - check done: no impact of NAs in predict or clprofiles
 clustMixType_0.2-5  2020-04-22  - fix output for validation indices: k_opt (integer) and index_opt (numeric) instead of named numeric k_opt 
