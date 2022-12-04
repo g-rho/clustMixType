@@ -907,4 +907,49 @@ summary.kproto <- function(object, data = NULL, pct.dig = 3, ...){
 #   }
 # 
 # optilambda(x=x, k = 4, nstart = 5)
-# res <- kproto(x = x, k = k, lambda = 9.56, iter.max = iter.max, nstart=5, keep.data = keep.data)  
+# res <- kproto(x = x, k = k, lambda = 9.56, iter.max = iter.max, nstart=5, keep.data = keep.data) 
+
+
+#' @title Assign k-Prototypes Clusters
+#'
+#' @description Plot distributions of the clusters across the variables.
+#'
+#' @details Wrapper around \code{\link{clprofiles}}. Only works for \code{kproto} object created with \code{keep.data = TRUE}. 
+#' 
+#' @param object Object resulting from a call of \code{kproto}.
+#' @param \dots Additional arguments to be passet to \code{\link{clprofiles}} such as e.g. \code{vars}.
+#'
+#' @examples
+#' # generate toy data with factors and numerics
+#' 
+#' n   <- 100
+#' prb <- 0.9
+#' muk <- 1.5 
+#' clusid <- rep(1:4, each = n)
+#' 
+#' x1 <- sample(c("A","B"), 2*n, replace = TRUE, prob = c(prb, 1-prb))
+#' x1 <- c(x1, sample(c("A","B"), 2*n, replace = TRUE, prob = c(1-prb, prb)))
+#' x1 <- as.factor(x1)
+#' 
+#' x2 <- sample(c("A","B"), 2*n, replace = TRUE, prob = c(prb, 1-prb))
+#' x2 <- c(x2, sample(c("A","B"), 2*n, replace = TRUE, prob = c(1-prb, prb)))
+#' x2 <- as.factor(x2)
+#' 
+#' x3 <- c(rnorm(n, mean = -muk), rnorm(n, mean = muk), rnorm(n, mean = -muk), rnorm(n, mean = muk))
+#' x4 <- c(rnorm(n, mean = -muk), rnorm(n, mean = muk), rnorm(n, mean = -muk), rnorm(n, mean = muk))
+#' 
+#' x <- data.frame(x1,x2,x3,x4)
+#' 
+#' # apply k-prototyps
+#' kpres <- kproto(x, 4)
+#' plot(kpres, vars = c("x1","x3")) 
+#' 
+#' 
+#' @author \email{gero.szepannek@@web.de}
+#' 
+#' @rdname plot.kproto
+#' @export
+plot.kproto <- function(x, ...){
+  if(!any("data" %in% names(x))) stop("plot method for kproto objects only works for keep.data = TRUE. Use clprofiles() instead.")
+  clprofiles(x, x$data, ...)  
+}

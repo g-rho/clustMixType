@@ -1,11 +1,12 @@
 ...tbds:  - update testthat for validation_kproto (type argument)
-          - check: why is clprofiles not plot.kproto (extra args?) 
-            ...maybe add plot.kproto that calls clprofiles with default params 
+          - try to remember why has there been clprofiles and not plot.kproto so far? (...x argument for keep.data = F? ) 
 				  - check .Rd file
 				  
           - check NA treatment (argument + remove of NAs, ln 133ff + are they ignored if na.rm=F?)
 	        - update validation_kproto
 
+
+clustMixType_0.3-4  2022-12-04  - plot.kproto added (wrapper aorund clprofiles). 
 
 clustMixType_0.3-3  2022-12-04  - predict.kproto extended to data frame with only one obs. (ln.495, suggestd by G.Terziysky).
                                 - additional $stdization element returned by kproto_gower() for further use in predict function.
