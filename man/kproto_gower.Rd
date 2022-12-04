@@ -51,6 +51,8 @@ their corresponding lambda value.}
 
 \item{iter}{Prespecified maximum number of iterations.}
 
+\item{stdization}{List of standardized ranks for ordinal variables and and an additional element \code{num_ranges} with ranges of all numeric variables. Used by \code{\link{predict.kproto}}.}
+
 \item{trace}{List with two elements (vectors) tracing the iteration process: 
 \code{tot.dists} and \code{moved} number of observations over all iterations.}
 }

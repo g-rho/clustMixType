@@ -156,4 +156,19 @@ test_that("Prototypes for (unordered) factor variables using gower extension.",{
   expect_equal(class(kpres$centers[,3]), "factor")}
 )
 
+data(iris)
+model <- kproto(x = iris, k = 3)
+pred  <- predict(model, iris2[1, ])
+test_that("Prediction for data frame with one single observation.",{
+  expect_equal(class(pred$dists)[1], "matrix")}
+)
+
+iris2 <- iris
+iris2$Species <- as.ordered(iris$Species)
+model <- kproto(x = iris2, k = 3, type = "gower")
+pred <- predict(model, iris2[1, ])
+test_that("Prediction for data frame with one single observation for type = gower.",{
+  expect_equal(class(pred$dists)[1], "matrix")}
+)
+
 

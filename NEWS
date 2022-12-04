@@ -1,12 +1,18 @@
-...tbds:			- update validation_kproto
+...tbds:  - update testthat for validation_kproto (type argument)
+          - check: why is clprofiles not plot.kproto (extra args?) 
+            ...maybe add plot.kproto that calls clprofiles with default params 
+				  - check .Rd file
+				  
+          - check NA treatment (argument + remove of NAs, ln 133ff + are they ignored if na.rm=F?)
+	        - update validation_kproto
 
-  				- check: why is clprofiles not plot.kproto (extra args?) 
-                                         ...maybe add plot.kproto that calls clprofiles with default params 
-                                - check NA treatment (argument + remove of NAs, ln 133ff + are they ignored if na.rm=F?)
-				- check .Rd file
+
+clustMixType_0.3-3  2022-12-04  - predict.kproto extended to data frame with only one obs. (ln.495, suggestd by G.Terziysky).
+                                - additional $stdization element returned by kproto_gower() for further use in predict function.
+                                - predict.kproto() for type = "gower" changed (now uses standardization from training data.
 
 clustMixType_0.3-2  2022-11-19  - example added to .Rd     
-				- commented chunks removed
+				                        - commented chunks removed
                                 - some tests for gower extension added
                                 - error check in validation_kproto() ln. 972f as long as if it is not implemented for type == "gower"
 

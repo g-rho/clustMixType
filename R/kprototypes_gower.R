@@ -49,6 +49,7 @@
 #' @return \item{tot.withinss}{Target function: sum of all observations' distances to their corresponding cluster prototype.}
 #' @return \item{dists}{Matrix with distances of observations to all cluster prototypes.}
 #' @return \item{iter}{Prespecified maximum number of iterations.}
+#' @return \item{stdization}{List of standardized ranks for ordinal variables and and an additional element \code{num_ranges} with ranges of all numeric variables. Used by \code{\link{predict.kproto}}.}
 #' @return \item{trace}{List with two elements (vectors) tracing the iteration process: 
 #' \code{tot.dists} and \code{moved} number of observations over all iterations.}
 #'   
@@ -127,7 +128,9 @@ kproto_gower <- function(x, k, lambda = NULL, iter.max = 100, na.rm = TRUE, keep
   catvars <- sapply(x, is.factor) & !ordvars
   anyfact <- any(catvars)
   
-
+  # initialize lookup table to store standardized ranks / ranges of numeric variables for predict.kproto()
+  lookup <- list() 
+  
   # # treatment of missings  ...done by kproto()
   # NAcount <- apply(x, 2, function(z) sum(is.na(z)))
   # if(verbose){
@@ -360,7 +363,7 @@ kproto_gower <- function(x, k, lambda = NULL, iter.max = 100, na.rm = TRUE, keep
     dists <- matrix(NA, nrow=nrows, ncol = k)
     for(i in 1:k){
       
-      # in case of no numeric / factor / ordinale variables set:
+      # in case of no numeric / factor / ordinal variables set:
       d1 <- d2 <- d3 <- rep(0, nrows)
       
       if(any(numvars)){
@@ -403,8 +406,19 @@ kproto_gower <- function(x, k, lambda = NULL, iter.max = 100, na.rm = TRUE, keep
       protos[,which(ordvars)[jord]] <- sapply(protos.ord[,jord], function(z) xord[which.min(abs(rank(xord[,jord]) - z)), jord])
     }
     for(jord in which(ordvars)) protos[,jord] <- factor(protos[,jord], levels = levels(protos[,jord]), ordered = TRUE)
+    
+    # store standardizied ranksin lookup table for predict.kproto()
+    for(jord in 1:ncol(xord)){
+      df <- data.frame(unique(xord[,jord]),
+                       unique(x[,which(ordvars)[jord], drop = FALSE] / rgords[jord])
+                       )
+      names(df) <- c("level", "value")
+      lookup[[names(xord)[jord]]] <- df
+    }  
   }
-  
+  # store ranges of numeric variables for predict.kproto
+  if(any(numvars)) lookup$num_ranges <- rgnums
+
   if(na.rm == FALSE){
     if(sum(allNAs) > 0){
       clusters[allNAs] <- NA
@@ -422,7 +436,8 @@ kproto_gower <- function(x, k, lambda = NULL, iter.max = 100, na.rm = TRUE, keep
               withinss = within,
               tot.withinss = tot.within,   
               dists = dists, 
-              iter = iter, 
+              iter = iter,
+              stdization = lookup,
               trace = list(tot.dists = tot.dists, moved = moved))
   
   # if(keep.data) res$data = x  # ...done by kproto() 

@@ -64,6 +64,9 @@ Caution: For \code{verbose=FALSE}, if the number of clusters is reduced during t
 
 \item{iter}{Prespecified maximum number of iterations.}
 
+\item{stdization}{Only returned for \code{type = "gower"}: List of standardized ranks for ordinal variables 
+and an additional element \code{num_ranges} with ranges of all numeric variables. Used by \code{\link{predict.kproto}}.}
+
 \item{trace}{List with two elements (vectors) tracing the iteration process: 
 \code{tot.dists} and \code{moved} number of observations over all iterations.}
 }

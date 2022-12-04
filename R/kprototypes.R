@@ -2,6 +2,7 @@
 # For their feedback and suggestions thanks to:
 # - Bridget Ssendagala 
 # - Ben Feng 
+# - Galen Terziysky
 ###############################################
 
 #' @title k-Prototypes Clustering
@@ -56,6 +57,8 @@ kproto <- function (x, ...)
 #' @return \item{tot.withinss}{Target function: sum of all observations' distances to their corresponding cluster prototype.}
 #' @return \item{dists}{Matrix with distances of observations to all cluster prototypes.}
 #' @return \item{iter}{Prespecified maximum number of iterations.}
+#' @return \item{stdization}{Only returned for \code{type = "gower"}: List of standardized ranks for ordinal variables 
+#' and an additional element \code{num_ranges} with ranges of all numeric variables. Used by \code{\link{predict.kproto}}.}
 #' @return \item{trace}{List with two elements (vectors) tracing the iteration process: 
 #' \code{tot.dists} and \code{moved} number of observations over all iterations.}
 #'   
@@ -490,6 +493,8 @@ predict.kproto <-function(object, newdata, ...){
       #a1 <- proc.time()[3]      
       #d2 <- lambda * apply(x[,catvars],1, function(z) sum((z != protos[i,catvars]))) # wtd simple matching for categorics 
       d2 <- sapply(which(catvars), function(j) return(x[,j] != rep(protos[i,j], nrows)) )
+      # fix for x data frame with only one observation according to G.Terziysky
+      if (nrows == 1) d2 <- matrix(data = d2, nrow = 1, byrow = TRUE, dimnames = list(NULL, names(x)[catvars])) # <- FIX
       d2[is.na(d2)] <- FALSE
       if(length(lambda) == 1) d2 <- lambda * rowSums(d2)
       if(length(lambda) > 1) d2 <- as.matrix(d2) %*% lambda[catvars]
@@ -498,7 +503,7 @@ predict.kproto <-function(object, newdata, ...){
       #cat(a1-a0, a2-a1, "\n")
     }
   }
-  
+
   if(object$type == "gower"){
     # check for numeric, ordinal and factor variables
     numvars <- sapply(x, is.numeric)
@@ -508,19 +513,22 @@ predict.kproto <-function(object, newdata, ...){
     catvars <- sapply(x, is.factor) & !ordvars
     anyfact <- any(catvars)
 
-    # vector of ranges for normalization  
-    if(any(numvars)) rgnums <- sapply(x[, numvars, drop = FALSE], function(z) diff(range(z)))
-    if(any(ordvars)){
-#xord   <- x[, ordvars, drop = FALSE] # store original variables 
-      # ...and replace ordered variables and prototypes by their ranks
-      for(jord in which(ordvars)) {
-        unix     <- unique(x[,jord])
-        x[,jord] <- rank(x[,jord])
-        unord    <- unique(x[,jord])
-        ids <- sapply(as.character(protos[,jord]), function(z) which(unix == z))
-        protos[,jord] <- as.numeric(unord)[ids]
+    # normalization numeric variables to unit range from lookup table 
+    if(any(numvars)){
+      for(jord in which(numvars)){
+        n <- names(x)[jord]
+        x[,jord] <- x[,jord] / object$stdization$num_ranges[[n]]
+        protos[,jord] <- protos[,jord] / object$stdization$num_ranges[[n]]
       }
-      rgords <- sapply(x[, ordvars, drop = FALSE], function(z) diff(range(z)))
+    } 
+    # replace ordinal levels by standardized ranks from lookup table
+    if(any(ordvars)){
+      for(jord in which(ordvars)){
+        val <- object$stdization[[names(x)[jord]]]$value
+        names(val) <- object$stdization[[names(x)[jord]]]$level
+        x[,jord] <- val[x[,jord]]
+        protos[,jord] <- val[protos[,jord]]
+      }  
     }
 
     # compute distances 
@@ -533,7 +541,7 @@ predict.kproto <-function(object, newdata, ...){
       
       if(any(numvars)){
         d1 <- abs(x[, numvars, drop = FALSE] - matrix(rep(as.numeric(protos[i, numvars, drop = FALSE]), nrows), nrow=nrows, byrow=T))
-        for(jnum in 1:ncol(d1)) d1[,jnum] <- d1[,jnum] / rgnums[jnum] 
+        for(jnum in 1:ncol(d1)) d1[,jnum] <- d1[,jnum] / object$stdization$num_ranges[[names(d1)[jnum]]] 
         d1[is.na(d1)] <- 0
         if(length(lambda) > 1) d1 <- as.matrix(d1) %*% lambda[numvars]
         if(is.null(lambda)) d1 <- rowSums(d1)
@@ -548,7 +556,7 @@ predict.kproto <-function(object, newdata, ...){
       
       if(any(ordvars)){
         d3 <- abs(x[, ordvars, drop = FALSE] - matrix(rep(as.numeric(protos[i, ordvars, drop = FALSE]), nrows), nrow=nrows, byrow=T))
-        for(jord in 1:ncol(d3)) d3[,jord] <- d3[,jord] / rgords[jord] 
+        #for(jord in 1:ncol(d3)) d3[,jord] <- d3[,jord] / rgords[jord] # different to kproto_gower() not needed -- already standardized via exported lookup table in ln. 518ff
         d3[is.na(d3)] <- 0
         if(length(lambda) > 1) d3 <- as.matrix(d3) %*% lambda[ordvars]
         if(is.null(lambda)) d3 <- rowSums(d3)
