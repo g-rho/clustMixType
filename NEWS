@@ -6,6 +6,8 @@
 	        - update validation_kproto
 
 
+clustMixType_0.3-5  2022-12-06  - fixes in test_basics (prediction for only 1 obs) and validation_kproto (stop for gower). 
+
 clustMixType_0.3-4  2022-12-04  - plot.kproto added (wrapper aorund clprofiles). 
 
 clustMixType_0.3-3  2022-12-04  - predict.kproto extended to data frame with only one obs. (ln.495, suggestd by G.Terziysky).
