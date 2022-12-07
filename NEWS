@@ -5,6 +5,10 @@
           - check NA treatment (argument + remove of NAs, ln 133ff + are they ignored if na.rm=F?)
 	        - update validation_kproto
 
+clustMixType_0.3-6  2022-12-07  - internal imputation and one step imputation of doi = 10.1007/s00357-022-09422-y implemented
+                                - changing the argument na.rm from logical to character
+                                - backwards compatibility is given, since TRUE is changed to "yes" and FALSE to "no" automatically
+                                - added some new tests in test_basic regarding the imputation
 
 clustMixType_0.3-5  2022-12-06  - fixes in test_basics (prediction for only 1 obs) and validation_kproto (stop for gower). 
 

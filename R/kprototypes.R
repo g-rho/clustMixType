@@ -41,7 +41,7 @@ kproto <- function (x, ...)
 #' their corresponding lambda value.
 #' @param iter.max Maximum number of iterations if no convergence before.
 #' @param nstart If > 1 repetitive computations with random initializations are computed and the result with minimum tot.dist is returned.
-#' @param na.rm A logical value indicating whether NA values should be stripped before the computation proceeds.
+#' @param na.rm Character; Either "yes" to strip NA values for complete case analysis, "no" to keep and ignore NA values, "imp.internal" to impute the NAs within the algorithm or "imp.onestep" to apply the algorithm ignoring the NAs and impute them after the partition is determined.
 #' @param keep.data Logical whether original should be included in the returned object.
 #' @param verbose Logical whether additional information about process should be printed. 
 #' Caution: For \code{verbose=FALSE}, if the number of clusters is reduced during the iterations it will not mentioned.
@@ -103,6 +103,8 @@ kproto <- function (x, ...)
 #' @references \itemize{
 #'     \item Szepannek, G. (2018): clustMixType: User-Friendly Clustering of Mixed-Type Data in R, {\emph{The R Journal 10/2}}, 200-208, 
 #'           \doi{10.32614/RJ-2018-048}.
+#'     \item Aschenbruck, R., Szepannek, G., Wilhelm, A. (2022): Imputation Strategies for Clustering Mixed‑Type Data with Missing Values, 
+#'     {\emph{Journal of Classification}}, \doi{10.1007/s00357-022-09422-y}. 
 #'     \item Z.Huang (1998): 
 #'           Extensions to the k-Means Algorithm for Clustering Large Data Sets with Categorical Variables, 
 #'           Data Mining and Knowledge Discovery 2, 283-304.
@@ -115,7 +117,7 @@ kproto <- function (x, ...)
 #' 
 #' @method kproto default
 #' @export 
-kproto.default <- function(x, k, lambda = NULL, type = "standard", iter.max = 100, nstart = 1, na.rm = TRUE, keep.data = TRUE, verbose = TRUE, ...){
+kproto.default <- function(x, k, lambda = NULL, type = "standard", iter.max = 100, nstart = 1, na.rm = "yes", keep.data = TRUE, verbose = TRUE, ...){
   
   # enable input of tibbles
   if(is_tibble(x) == TRUE){x <- as.data.frame(x)}
@@ -130,29 +132,45 @@ kproto.default <- function(x, k, lambda = NULL, type = "standard", iter.max = 10
     print(NAcount)
   }
   if(any(NAcount == nrow(x))) stop(paste("Variable(s) have only NAs please remove them:",names(NAcount)[NAcount == nrow(x)],"!"))
-  if(na.rm) {
-    miss <- apply(x, 1, function(z) any(is.na(z)))
-    if(verbose){
-      cat(sum(miss), "observation(s) with NAs.\n")
-      if(sum(miss) > 0) message("Observations with NAs are removed.\n")
-      cat("\n")
-    } 
-    x <- x[!miss,]
-  } # remove missings
   
-  if(!na.rm){
-    allNAs <- apply(x,1,function(z) all(is.na(z)))
-    if(sum(allNAs) > 0){
-      if(verbose) cat(sum(allNAs), "observation(s) where all variables NA.\n")
-      warning("No meaningful cluster assignment possible for observations where all variables NA.\n")
-      if(verbose) cat("\n")
-      
+  # Backward compatibility
+  if(is.logical(na.rm)){
+    if(na.rm){
+      na.rm <- "yes"
+    }else{
+      na.rm <- "no"
     }
+    message("Logical input for na.rm is deprecated. Please use either 'yes','no','imp.internal' or 'imp.onestep'.\n")
+  }
+  if(na.rm %in% c("yes","no","imp.internal", "imp.onestep")){
+    if(na.rm == "yes") {
+      miss <- apply(x, 1, function(z) any(is.na(z)))
+      if(verbose){
+        cat(sum(miss), "observation(s) with NAs.\n")
+        if(sum(miss) > 0) message("Observations with NAs are removed.\n")
+        cat("\n")
+      } 
+      x <- x[!miss,]
+    } # remove missings
+    
+    if(na.rm != "yes"){
+      allNAs <- apply(x,1,function(z) all(is.na(z)))
+      if(sum(allNAs) > 0){
+        if(verbose) cat(sum(allNAs), "observation(s) where all variables NA.\n")
+        warning("No meaningful cluster assignment possible for observations where all variables NA.\n")
+        if(verbose) cat("\n")
+        
+      }
+    }
+  }else{
+    stop("Argument na.rm must be either 'yes','no','imp.internal' or 'imp.onestep'!")
   }
   
-  
-  if(!type %in% c("standard", "gower")) stop("Argument type must bei either 'standard' or 'gower'!")
+  if(!type %in% c("standard", "gower")) stop("Argument type must be either 'standard' or 'gower'!")
   if(type == "standard"){
+    
+    # save origin data, befor starting the imputation process
+    if(na.rm == "imp.internal"){origin <- x}
     
     # initial error checks
     if(!is.data.frame(x)) stop("x should be a data frame!")
@@ -230,6 +248,17 @@ kproto.default <- function(x, k, lambda = NULL, type = "standard", iter.max = 10
           lambda <- 1
         }
       }
+    }
+    
+    # deleting all incomplete observations
+    if(na.rm == "yes"){
+      miss <- apply(x, 1, function(z) any(is.na(z)))
+      if(verbose){
+        cat(sum(miss), "observation(s) with NAs.\n")
+        if(sum(miss) > 0) message("Observations with NAs are removed.\n")
+        cat("\n")
+      }
+      x <- x[!miss,]
     }
     
     # initialize clusters
@@ -318,6 +347,22 @@ kproto.default <- function(x, k, lambda = NULL, type = "standard", iter.max = 10
         }
       }
       
+      # update missing values, if NAs should be imputed during the algorithm
+      if(na.rm == "imp.internal"){
+        x_old <- x
+        x <- origin
+        
+        if(any(is.na(x[,numvars]))){
+          x[,numvars][is.na(x[,numvars])] <- protos[clusters,numvars][is.na(x[,numvars])]
+        }
+        if(any(is.na(x[,catvars]))){
+          x[,catvars][is.na(x[,catvars])] <- protos[clusters,catvars][is.na(x[,catvars])]
+        }
+        
+        # observation with all values NA won't be imputed
+        x[allNAs,] <- NA
+      }
+      
       if(k == 1){clusters <- rep(1, length(clusters)); size <- table(clusters); iter <- iter.max; break}
       
       # check for any equal prototypes and reduce cluster number in case of occurence
@@ -338,7 +383,15 @@ kproto.default <- function(x, k, lambda = NULL, type = "standard", iter.max = 10
       }
       
       # add stopping rules
-      if(moved[length(moved)] ==  0) break
+      if(moved[length(moved)] ==  0){
+        if(na.rm != "imp.internal"){
+          break
+        }else{
+          if(sum(!(x == x_old), na.rm = TRUE) == 0){
+            break
+          }
+        }
+      }
       
       if(k == 1){clusters <- rep(1, length(clusters)); size <- table(clusters); iter <- iter.max; break}
       
@@ -382,7 +435,8 @@ kproto.default <- function(x, k, lambda = NULL, type = "standard", iter.max = 10
       tot.within    <- sum(within)
     }
     
-    if(na.rm == FALSE){
+    # observations with all NA are not assigned to a cluster
+    if(na.rm != "yes"){
       if(sum(allNAs) > 0){
         clusters[allNAs] <- NA
         dists[allNAs,] <- NA
@@ -405,19 +459,39 @@ kproto.default <- function(x, k, lambda = NULL, type = "standard", iter.max = 10
   }
   
   if(type == "gower"){
+    if(na.rm %in% c("imp.internal", "imp.onestep")){
+      stop("Argument na.rm must be either 'yes' or 'no', since imputation is not yet implemented for type = 'gower'!")
+    }
     res <- kproto_gower(x=x, k=k_input, lambda = lambda, iter.max = iter.max, verbose=verbose, na.rm = na.rm)
   }
-
+  
+  # if keep.data == TRUE add data to list before nstart-loop otherwise the first determined x (inclusive imputed values)
+  # is added and not necessarily the data of the x with the "best" imputed values (of clusterpartition with smallest tot.withinss)
+  if(keep.data) res$data = x
   
   # loop: if nstart > 1:
   if(nstart > 1)
     for(j in 2:nstart){
+      # start function kproto with the origin data in case of imputation
+      if(na.rm == "imp.internal"){
+        x <- origin
+      }
       res.new <- kproto(x=x, k=k_input, lambda = lambda,  type = type, iter.max = iter.max, nstart=1, verbose=verbose, na.rm = na.rm)
       if(res.new$tot.withinss < res$tot.withinss) res <- res.new
     }  
   
+  if(na.rm == "imp.onestep"){
+    x <- res$data
+    if(any(is.na(x[,numvars]))){
+      x[,numvars][is.na(x[,numvars])] <- protos[clusters,numvars][is.na(x[,numvars])]
+    }
+    if(any(is.na(x[,catvars]))){
+      x[,catvars][is.na(x[,catvars])] <- protos[clusters,catvars][is.na(x[,catvars])]
+    }
+    res$data <- x
+  }
+  
   res$type <- type
-  if(keep.data) res$data <- x
   class(res) <- "kproto"
   return(res)
 }
