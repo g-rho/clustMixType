@@ -15,7 +15,7 @@
 #' For factors simple matching distance is used as in the original k prototypes algorithm. 
 #' The prototypes are given by the median for numeric variables, the mode for factors and the level with the closest rank 
 #' to the median rank of the corresponding cluster.
-#' In case of \code{na.rm = FALSE}: for each observation variables with missings are ignored 
+#' In case of \code{na.rm = "no"}: for each observation variables with missings are ignored 
 #' (i.e. only the remaining variables are considered for distance computation). 
 #' In consequence for observations with missings this might result in a change of variable's weighting compared to the one specified
 #' by \code{lambda}. Further note: For these observations distances to the prototypes will typically be smaller as they are based 
@@ -36,7 +36,7 @@
 #' their corresponding lambda value.
 #' 
 #' @param iter.max Maximum number of iterations if no convergence before.
-#' @param na.rm A logical value indicating whether NA values should be stripped before the computation proceeds.
+#' @param na.rm Character; Either "yes" to strip NA values for complete case analysis or "no" to keep and ignore NA values.
 #' @param keep.data Logical whether original should be included in the returned object.
 #' @param verbose Logical whether information about the cluster procedure should be given. Caution: If \code{verbose=FALSE}, the reduction of the number of clusters is not mentioned.
 #
@@ -104,7 +104,7 @@
 #' @importFrom stats complete.cases
 #' @export 
 
-kproto_gower <- function(x, k, lambda = NULL, iter.max = 100, na.rm = TRUE, keep.data = TRUE, verbose = TRUE){
+kproto_gower <- function(x, k, lambda = NULL, iter.max = 100, na.rm = "yes", keep.data = TRUE, verbose = TRUE){
   # # enable input of tibbles #...done within kproto()
   # if(is_tibble(x) == TRUE){x <- as.data.frame(x)}
   
@@ -138,7 +138,7 @@ kproto_gower <- function(x, k, lambda = NULL, iter.max = 100, na.rm = TRUE, keep
   #   print(NAcount)
   # }
   # if(any(NAcount == nrow(x))) stop(paste("Variable(s) have only NAs please remove them:", names(NAcount)[NAcount == nrow(x)],"!"))
-  # if(na.rm) {
+  # if(na.rm == "yes") {
   #   miss <- apply(x, 1, function(z) any(is.na(z)))
   #   if(verbose){
   #     cat(sum(miss), "observation(s) with NAs.\n")
@@ -148,7 +148,7 @@ kproto_gower <- function(x, k, lambda = NULL, iter.max = 100, na.rm = TRUE, keep
   #   x <- x[!miss,]
   #   } # remove missings
   # 
-  # if(!na.rm){
+  # if(na.rm != "yes"){
   #   allNAs <- apply(x,1,function(z) all(is.na(z)))
   #   if(sum(allNAs) > 0){
   #     if(verbose) cat(sum(allNAs), "observation(s) where all variables NA.\n")
@@ -419,7 +419,7 @@ kproto_gower <- function(x, k, lambda = NULL, iter.max = 100, na.rm = TRUE, keep
   # store ranges of numeric variables for predict.kproto
   if(any(numvars)) lookup$num_ranges <- rgnums
 
-  if(na.rm == FALSE){
+  if(na.rm == "no"){
     if(sum(allNAs) > 0){
       clusters[allNAs] <- NA
       dists[allNAs,] <- NA

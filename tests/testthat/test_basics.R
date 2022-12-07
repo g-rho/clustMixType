@@ -93,19 +93,38 @@ test_that("distances are computed correctly",{
 }
 )
 
+# test missings and imputation
+
 x3 <- x4 <- x
 x3$x1[1] <- NA
 x4$x1[1] <- x4$x2[1] <- x4$x3[1] <- x4$x4[1] <-  NA
 test_that("message for NAs.",{
   expect_message(kproto(x3, 4),"Observations with NAs are removed.")
-  expect_warning(kproto(x4, 4, na.rm = FALSE),"No meaningful cluster assignment possible for observations where all variables NA.")}
+  expect_warning(kproto(x4, 4, na.rm = "no"),"No meaningful cluster assignment possible for observations where all variables NA.")
+  expect_error(kproto(x3, 4, na.rm = "not"), "Argument na.rm must be either 'yes','no','imp.internal' or 'imp.onestep'!")
+  expect_warning(kproto(x3, 4, na.rm = TRUE),"Argument definition na.rm changed. Please update your code and use either 'yes','no','imp.internal' or 'imp.onestep'.")
+  expect_error(kproto(x3, 4, na.rm = "imp.onestep", type = "gower"), "Argument na.rm must be either 'yes' or 'no', since imputation is not yet implemented for type = 'gower'!")}
 )
 
 prototypes <- data.frame(V1 = factor(c("A","B")), V2 = c(-3,3)) 
 x5 <- data.frame(V1 = factor(c(rep("A",10),rep("B",10))), V2 = c(rep(-3, 5), rep(-5, 5), rep(NA, 10))) 
-kpres <- kproto(x = x5, k = prototypes, na.rm = FALSE)
+kpres <- kproto(x = x5, k = prototypes, na.rm = "no")
 test_that("handling all NAs in variable in a cluster.",{
   expect_equal(kpres$centers[2,2], prototypes[2,2])}
+)
+
+x6 <- data.frame(V1 = factor(c(rep("A",10),rep("B",10))), V2 = c(rep(-3, 5), rep(-5, 5), rep(5, 5), rep(NA, 5))) 
+kpres_i <- kproto(x = x6, k = prototypes, na.rm = "imp.internal")
+kpres_ios <- kproto(x = x6, k = prototypes, na.rm = "imp.onestep")
+test_that("application of different imputation strategies",{
+  expect_is(kpres_i, "kproto")
+  expect_is(kpres_i$cluster, "integer")
+  expect_is(kpres_i$dists, "matrix")
+  expect_false(any(is.na(kpres_i$data)))
+  expect_is(kpres_ios, "kproto")
+  expect_is(kpres_ios$cluster, "integer")
+  expect_is(kpres_ios$dists, "matrix")
+  expect_false(any(is.na(kpres_ios$data)))}
 )
 
 
