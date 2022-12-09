@@ -917,7 +917,7 @@ print.kproto <- function(x, ...){
 #' @importFrom stats predict 
 #' @export
 summary.kproto <- function(object, data = NULL, pct.dig = 3, ...){
-  if(class(object) != "kproto") stop("object must be of class kproto!")
+  if(!inherits(object, "kproto")) stop("object must be of class kproto!")
   
   if(is.null(data)){
     data <- object$data

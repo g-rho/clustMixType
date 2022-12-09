@@ -9,7 +9,7 @@ Suggests: testthat
 Description: Functions to perform k-prototypes partitioning clustering for
     mixed variable-type data according to Z.Huang (1998): Extensions to the k-Means
     Algorithm for Clustering Large Data Sets with Categorical Variables, Data Mining
-    and Knowledge Discovery 2, 283-304, <DOI:10.1023/A:1009769707641>.
+    and Knowledge Discovery 2, 283-304.
 License: GPL (>=2)
 RoxygenNote: 7.2.0
 NeedsCompilation: no

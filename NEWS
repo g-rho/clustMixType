@@ -6,6 +6,8 @@
 
 clustMixType_0.3-7  2022-12-09  - fixes according to win-builder: importFrom("stats", "median"), .Rd for na.rm and plot.kproto 
                                 - NA treatment for kproto_gower (ln. 424): cluster membership NA if all varianbles are NA. Note kproto_gower does not allow for na.rm = "yes" data with removed missings are passed from kproto(). 
+                                - validation_kproto (ln. 983)/kproto (ln.920): class(object) != "kproto") replaced by: !inherits(object, "kproto") 
+                                - <DOI:10.1023/A:1009769707641> from description removed (for whatever reason the page is not available). 
 clustMixType_0.3-6  2022-12-07  - internal imputation and one step imputation of doi = 10.1007/s00357-022-09422-y implemented
                                 - changing the argument na.rm from logical to character
                                 - backwards compatibility is given, since TRUE is changed to "yes" and FALSE to "no" automatically

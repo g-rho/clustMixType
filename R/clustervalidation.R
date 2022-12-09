@@ -980,8 +980,8 @@ validation_kproto <- function(method = NULL, object = NULL, data = NULL, k = NUL
   if(!is.null(data) && ncol(data) < 2) stop("for clustering data should contain at least two variables!")
   if(!is.null(data) && nrow(data) < 4) stop("for clustering data should contain at least four objects!")
   
-  if(!is.null(object) && class(object) != "kproto") stop("object must be type of 'kproto'")
-  
+  #if(!is.null(object) && class(object) != "kproto") stop("object must be type of 'kproto'")
+  if(!is.null(object) && !inherits(object, "kproto")) stop("object must be type of 'kproto'")
   if(!is.null(k) && length(k) == 1){
     stop("k should be the search range for optimum number of clusters, e.g. c(2:sqrt(n))")
   }
