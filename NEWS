@@ -1,8 +1,11 @@
-...tbds:  - try to remember why has there been clprofiles and not plot.kproto so far? (...x argument for keep.data = F? ) 
+...tbds:  - add test for allNAs and kproto_gower
+          - try to remember why has there been clprofiles and not plot.kproto so far? (...x argument for keep.data = F? ) 
           - check NA treatment (argument + remove of NAs, ln 133ff + are they ignored if na.rm=F?)
-	  - update validation_kproto
+	        - update validation_kproto
 
 
+clustMixType_0.3-7  2022-12-09  - fixes according to win-builder: importFrom("stats", "median"), .Rd for na.rm and plot.kproto 
+                                - NA treatment for kproto_gower (ln. 424): cluster membership NA if all varianbles are NA. Note kproto_gower does not allow for na.rm = "yes" data with removed missings are passed from kproto(). 
 clustMixType_0.3-6  2022-12-07  - internal imputation and one step imputation of doi = 10.1007/s00357-022-09422-y implemented
                                 - changing the argument na.rm from logical to character
                                 - backwards compatibility is given, since TRUE is changed to "yes" and FALSE to "no" automatically

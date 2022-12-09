@@ -7,9 +7,9 @@
 \method{plot}{kproto}(x, ...)
 }
 \arguments{
-\item{\dots}{Additional arguments to be passet to \code{\link{clprofiles}} such as e.g. \code{vars}.}
+\item{x}{Object resulting from a call of \code{kproto}.}
 
-\item{object}{Object resulting from a call of \code{kproto}.}
+\item{\dots}{Additional arguments to be passet to \code{\link{clprofiles}} such as e.g. \code{vars}.}
 }
 \description{
 Plot distributions of the clusters across the variables.

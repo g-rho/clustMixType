@@ -39,6 +39,7 @@ kproto <- function (x, ...)
 #' and simple matching coefficient between categorical variables. Also a vector of variable specific factors is possible where 
 #' the order must correspond to the order of the variables in the data. In this case all variables' distances will be multiplied by 
 #' their corresponding lambda value.
+#' @param type Character, to specify the distance for clustering. Either \code{"standard"} (cf. details below) or \code{"gower"}. The latter calls \code{\link{kproto_gower}}.
 #' @param iter.max Maximum number of iterations if no convergence before.
 #' @param nstart If > 1 repetitive computations with random initializations are computed and the result with minimum tot.dist is returned.
 #' @param na.rm Character; Either "yes" to strip NA values for complete case analysis, "no" to keep and ignore NA values, "imp.internal" to impute the NAs within the algorithm or "imp.onestep" to apply the algorithm ignoring the NAs and impute them after the partition is determined.
@@ -51,7 +52,7 @@ kproto <- function (x, ...)
 #' @return \item{cluster}{Vector of cluster memberships.}
 #' @return \item{centers}{Data frame of cluster prototypes.}
 #' @return \item{lambda}{Distance parameter lambda.}
-#' @return \item{type}{Character, to specify the distance for clustering. Either \code{"standard"} (cf. details below) or \code{"gower"}. The latter calls \code{\link{kproto_gower}}.}
+#' @return \item{type}{Type argument of the function call.}
 #' @return \item{size}{Vector of cluster sizes.}
 #' @return \item{withinss}{Vector of within cluster distances for each cluster, i.e. summed distances of all observations belonging to a cluster to their respective prototype.}
 #' @return \item{tot.withinss}{Target function: sum of all observations' distances to their corresponding cluster prototype.}
@@ -990,7 +991,7 @@ summary.kproto <- function(object, data = NULL, pct.dig = 3, ...){
 #'
 #' @details Wrapper around \code{\link{clprofiles}}. Only works for \code{kproto} object created with \code{keep.data = TRUE}. 
 #' 
-#' @param object Object resulting from a call of \code{kproto}.
+#' @param x Object resulting from a call of \code{kproto}.
 #' @param \dots Additional arguments to be passet to \code{\link{clprofiles}} such as e.g. \code{vars}.
 #'
 #' @examples

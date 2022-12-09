@@ -9,7 +9,7 @@ kproto_gower(
   k,
   lambda = NULL,
   iter.max = 100,
-  na.rm = TRUE,
+  na.rm = "yes",
   keep.data = TRUE,
   verbose = TRUE
 )
@@ -26,14 +26,14 @@ their corresponding lambda value.}
 
 \item{iter.max}{Maximum number of iterations if no convergence before.}
 
-\item{na.rm}{A logical value indicating whether NA values should be stripped before the computation proceeds.}
+\item{na.rm}{Character; passed from \code{\link{kproto}}. For  "no" observations where all variables are missinf are assigned cluster membershim \code{NA}.}
 
 \item{keep.data}{Logical whether original should be included in the returned object.}
 
 \item{verbose}{Logical whether information about the cluster procedure should be given. Caution: If \code{verbose=FALSE}, the reduction of the number of clusters is not mentioned.}
 }
 \value{
-\code{\link{kmeans}} like object of class \code{kproto}:
+\code{\link{kmeans}} like object of class \code{\link{kproto}}:
 
 \item{cluster}{Vector of cluster memberships.}
 
@@ -68,7 +68,7 @@ are computed for the numeric variables (and for the ranks of the ordered factors
 For factors simple matching distance is used as in the original k prototypes algorithm. 
 The prototypes are given by the median for numeric variables, the mode for factors and the level with the closest rank 
 to the median rank of the corresponding cluster.
-In case of \code{na.rm = FALSE}: for each observation variables with missings are ignored 
+In case of \code{na.rm = "no"}: for each observation variables with missings are ignored 
 (i.e. only the remaining variables are considered for distance computation). 
 In consequence for observations with missings this might result in a change of variable's weighting compared to the one specified
 by \code{lambda}. Further note: For these observations distances to the prototypes will typically be smaller as they are based 
@@ -105,10 +105,10 @@ datasim <- function(n = 100, k.ord = 2, muk = 1.5){
  truth <- rep(1:4, each = n)
  
  # calling the internal kproto_gower() directly 
- kgres <- kproto_gower(x, 4, verbose = F)
+ kgres <- kproto_gower(x, 4, verbose = FALSE)
  
  # calling kproto gower via kproto:
- kgres2 <- kproto(x, 4, verbose = F, type = "gower", nstart = 10)
+ kgres2 <- kproto(x, 4, verbose = FALSE, type = "gower", nstart = 10)
  
  table(kgres$cluster, truth)
  clprofiles(kgres, x)
@@ -119,7 +119,7 @@ datasim <- function(n = 100, k.ord = 2, muk = 1.5){
     \item Gower, J. C. (1971): A General Coefficient of Similarity and Some of Its Properties. {\emph{Biometrics, 27(4)}}, 857–871. 
           \doi{10.2307/2528823}. 
     \item Podani, J. (1999): Extending Gower's general coefficient of similarity to ordinal characters. {\emph{TAXON, 48}}, 331-340.
-          \doi{10.2307/122443}.
+          \doi{10.2307/1224438}.
   }
 }
 \author{

@@ -14,7 +14,7 @@ kproto(x, ...)
   type = "standard",
   iter.max = 100,
   nstart = 1,
-  na.rm = TRUE,
+  na.rm = "yes",
   keep.data = TRUE,
   verbose = TRUE,
   ...
@@ -32,11 +32,13 @@ and simple matching coefficient between categorical variables. Also a vector of 
 the order must correspond to the order of the variables in the data. In this case all variables' distances will be multiplied by 
 their corresponding lambda value.}
 
+\item{type}{Character, to specify the distance for clustering. Either \code{"standard"} (cf. details below) or \code{"gower"}. The latter calls \code{\link{kproto_gower}}.}
+
 \item{iter.max}{Maximum number of iterations if no convergence before.}
 
 \item{nstart}{If > 1 repetitive computations with random initializations are computed and the result with minimum tot.dist is returned.}
 
-\item{na.rm}{A logical value indicating whether NA values should be stripped before the computation proceeds.}
+\item{na.rm}{Character; Either "yes" to strip NA values for complete case analysis, "no" to keep and ignore NA values, "imp.internal" to impute the NAs within the algorithm or "imp.onestep" to apply the algorithm ignoring the NAs and impute them after the partition is determined.}
 
 \item{keep.data}{Logical whether original should be included in the returned object.}
 
@@ -52,7 +54,7 @@ Caution: For \code{verbose=FALSE}, if the number of clusters is reduced during t
 
 \item{lambda}{Distance parameter lambda.}
 
-\item{type}{Character, to specify the distance for clustering. Either \code{"standard"} (cf. details below) or \code{"gower"}. The latter calls \code{\link{kproto_gower}}.}
+\item{type}{Type argument of the function call.}
 
 \item{size}{Vector of cluster sizes.}
 
@@ -128,6 +130,8 @@ clprofiles(kpres, x)
 \itemize{
     \item Szepannek, G. (2018): clustMixType: User-Friendly Clustering of Mixed-Type Data in R, {\emph{The R Journal 10/2}}, 200-208, 
           \doi{10.32614/RJ-2018-048}.
+    \item Aschenbruck, R., Szepannek, G., Wilhelm, A. (2022): Imputation Strategies for Clustering Mixed‑Type Data with Missing Values, 
+    {\emph{Journal of Classification}}, \doi{10.1007/s00357-022-09422-y}. 
     \item Z.Huang (1998): 
           Extensions to the k-Means Algorithm for Clustering Large Data Sets with Categorical Variables, 
           Data Mining and Knowledge Discovery 2, 283-304.

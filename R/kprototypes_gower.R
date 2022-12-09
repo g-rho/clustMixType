@@ -36,11 +36,11 @@
 #' their corresponding lambda value.
 #' 
 #' @param iter.max Maximum number of iterations if no convergence before.
-#' @param na.rm Character; Either "yes" to strip NA values for complete case analysis or "no" to keep and ignore NA values.
+#' @param na.rm Character; passed from \code{\link{kproto}}. For  "no" observations where all variables are missinf are assigned cluster membershim \code{NA}.
 #' @param keep.data Logical whether original should be included in the returned object.
 #' @param verbose Logical whether information about the cluster procedure should be given. Caution: If \code{verbose=FALSE}, the reduction of the number of clusters is not mentioned.
 #
-#' @return \code{\link{kmeans}} like object of class \code{kproto}:
+#' @return \code{\link{kmeans}} like object of class \code{\link{kproto}}:
 #' @return \item{cluster}{Vector of cluster memberships.}
 #' @return \item{centers}{Data frame of cluster prototypes.}
 #' @return \item{lambda}{Distance parameter lambda. For \code{code}{type = "gower"} only a vector of variable specific weights is possible.}
@@ -84,10 +84,10 @@
 #'  truth <- rep(1:4, each = n)
 #'  
 #'  # calling the internal kproto_gower() directly 
-#'  kgres <- kproto_gower(x, 4, verbose = F)
+#'  kgres <- kproto_gower(x, 4, verbose = FALSE)
 #'  
 #'  # calling kproto gower via kproto:
-#'  kgres2 <- kproto(x, 4, verbose = F, type = "gower", nstart = 10)
+#'  kgres2 <- kproto(x, 4, verbose = FALSE, type = "gower", nstart = 10)
 #'  
 #'  table(kgres$cluster, truth)
 #'  clprofiles(kgres, x)
@@ -98,10 +98,11 @@
 #'     \item Gower, J. C. (1971): A General Coefficient of Similarity and Some of Its Properties. {\emph{Biometrics, 27(4)}}, 857–871. 
 #'           \doi{10.2307/2528823}. 
 #'     \item Podani, J. (1999): Extending Gower's general coefficient of similarity to ordinal characters. {\emph{TAXON, 48}}, 331-340.
-#'           \doi{10.2307/122443}.
+#'           \doi{10.2307/1224438}.
 #'   }
 #' 
 #' @importFrom stats complete.cases
+#' @importFrom stats median
 #' @export 
 
 kproto_gower <- function(x, k, lambda = NULL, iter.max = 100, na.rm = "yes", keep.data = TRUE, verbose = TRUE){
@@ -420,6 +421,7 @@ kproto_gower <- function(x, k, lambda = NULL, iter.max = 100, na.rm = "yes", kee
   if(any(numvars)) lookup$num_ranges <- rgnums
 
   if(na.rm == "no"){
+    allNAs <- apply(x,1,function(z) all(is.na(z))) # note: not passed from kproto!  
     if(sum(allNAs) > 0){
       clusters[allNAs] <- NA
       dists[allNAs,] <- NA
