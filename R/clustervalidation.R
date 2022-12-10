@@ -931,6 +931,7 @@ tau_kproto <- function(object = NULL, data = NULL, k = NULL, dists = NULL, kp_ob
 #'   }
 #'
 #' @examples
+#' \dontrun{
 #' # generate toy data with factors and numerics
 #' n   <- 10
 #' prb <- 0.99
@@ -956,6 +957,7 @@ tau_kproto <- function(object = NULL, data = NULL, k = NULL, dists = NULL, kp_ob
 #' 
 #' # calculate cindex-value for the given clusterpartition
 #' cindex_value <- validation_kproto(method = "cindex", object = kpres)
+#' }
 #' 
 #' @rdname validation_kproto
 #' 
