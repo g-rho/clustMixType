@@ -221,9 +221,10 @@ kproto_gower <- function(x, k, lambda = NULL, iter.max = 100, na.rm = "yes", kee
     keep.protos <- rep(TRUE,k)
     for(l in 1:(k-1)){
       for(m in (l+1):k){
-        d1 <- sum((protos[l,numvars, drop = FALSE]-protos[m,numvars, drop = FALSE])^2) # euclidean for numerics
-        d2 <- sum(protos[l,catvars, drop = FALSE] != protos[m,catvars, drop = FALSE]) # compare levels 
-        d3 <- sum((protos[l,ordvars, drop = FALSE]-protos[m,ordvars, drop = FALSE])^2) # euclidean for ranks of ordinals
+        d1 <- d2 <- d3 <- 0
+        if(any(numvars)) d1 <- sum((protos[l,numvars, drop = FALSE]-protos[m,numvars, drop = FALSE])^2) # euclidean for numerics
+        if(any(catvars)) d2 <- sum(protos[l,catvars, drop = FALSE] != protos[m,catvars, drop = FALSE]) # compare levels 
+        if(any(ordvars)) d3 <- sum((protos[l,ordvars, drop = FALSE]-protos[m,ordvars, drop = FALSE])^2) # euclidean for ranks of ordinals
         if((d1+d2+d3) == 0) keep.protos[m] <- FALSE 
       }
     }
@@ -319,11 +320,12 @@ kproto_gower <- function(x, k, lambda = NULL, iter.max = 100, na.rm = "yes", kee
     if(iter == (iter.max-1)){ # REM: for last iteration equal prototypes are allowed. otherwise less prototypes than assigned clusters.
       keep.protos <- rep(TRUE,k)
       for(l in 1:(k-1)){
-        for(m in (l+1):k){
-          d1 <- sum((protos[l,numvars, drop = FALSE]-protos[m,numvars, drop = FALSE])^2) # euclidean for numerics
-          d2 <- sum(protos[l,catvars, drop = FALSE] != protos[m,catvars, drop = FALSE]) # compare levels for categorics 
-          d3 <- sum((protos[l,ordvars, drop = FALSE]-protos[m,ordvars, drop = FALSE])^2) # euclidean for ranks of ordinals
-          if((d1+d2) == 0) keep.protos[m] <- FALSE 
+        for(m in (l+1):k){        
+          d1 <- d2 <- d3 <- 0
+          if(any(numvars)) d1 <- sum((protos[l,numvars, drop = FALSE]-protos[m,numvars, drop = FALSE])^2) # euclidean for numerics
+          if(any(catvars)) d2 <- sum(protos[l,catvars, drop = FALSE] != protos[m,catvars, drop = FALSE]) # compare levels for categorics 
+          if(any(ordvars)) d3 <- sum((protos[l,ordvars, drop = FALSE]-protos[m,ordvars, drop = FALSE])^2) # euclidean for ranks of ordinals
+          if((d1+d2+d3) == 0) keep.protos[m] <- FALSE 
         }
       }
       if(!all(keep.protos)){
