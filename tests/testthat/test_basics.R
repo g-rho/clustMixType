@@ -130,7 +130,6 @@ test_that("application of different imputation strategies",{
 
 
 # test gower extension
-
 kpres <- kproto(x = x, k = 4, type = "gower")
 test_that("Type = gower can be called instead of standard.",{
   expect_equal(kpres$type, "gower")}
@@ -191,4 +190,7 @@ test_that("Prediction for data frame with one single observation for type = gowe
   expect_equal(class(pred$dists)[1], "matrix")}
 )
 
-
+kpres <- kproto(x = x, k = x[1:4,])
+test_that("kproto_gower works for is.data.frame(k).",{
+  expect_equal(class(kpres), "kproto")}
+)

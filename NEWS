@@ -4,8 +4,10 @@
 	        - update validation_kproto
 
 
-clustMixType_0.3-9  2022-12-12  - fixes in kproto_gower (ln 224ff & 324ff) - merging of equal prototypes
-                                - test number for validation_kproto reduced to decrease time for check on CRAN 
+clustMixType_0.3-9  2022-12-13   - number of test cases for validation_kproto reduced to decrease time for check on CRAN 
+                                 - fixes in kproto_gower (ln 236ff & 336ff): merging of equal prototypes (one of the for R < 4.1.0 and in ln. 328 the ordinal variables were not considered)
+                                 - fix for ordinal variables if k is data frame in kproto_gower (ln. 204ff)
+                                 - logo replaced
 clustMixType_0.3-8  2022-12-10  - examples from validation_kproto changed to \dontrun{} as they are too slow for CRAN submission 
 clustMixType_0.3-7  2022-12-09  - fixes according to win-builder: importFrom("stats", "median"), .Rd for na.rm and plot.kproto 
                                 - NA treatment for kproto_gower (ln. 424): cluster membership NA if all varianbles are NA. Note kproto_gower does not allow for na.rm = "yes" data with removed missings are passed from kproto(). 

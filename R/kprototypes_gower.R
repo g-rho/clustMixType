@@ -197,6 +197,18 @@ kproto_gower <- function(x, k, lambda = NULL, iter.max = 100, na.rm = "yes", kee
     if(any(names(k) != names(x))) stop("k and x have different column names!")
     if(anynum) {if( any(sapply(k, is.numeric) != numvars)) stop("Numeric variables of k and x do not match!")}
     if(anyfact) {if( any(sapply(k, is.factor) != catvars)) stop("Factor variables of k and x do not match!")}
+
+    if(anyord){
+      # ...and replace ordered variables for initial prototypes by their ranks according to 
+      for(jord in 1:ncol(xord)){
+        levsj <- unique(xord[,jord])
+        rgsj  <- unique(x[,which(ordvars)[jord]])
+        names(rgsj) <- levsj
+        if(!all(k[,which(ordvars)[jord]] %in% levsj)) stop(paste("Some levels of initial prototypes do not match levels in variable", names(k)[which(ordvars)[jord]],"!")) 
+        k[,which(ordvars)[jord]] <- as.numeric(rgsj[k[,which(ordvars)[jord]]])
+      }
+    }
+
     protos <- k
     if(any(!complete.cases(protos))) stop("Prototypes with missing values. Choose initial prototypes without missing values!")
     k <- nrow(protos)
@@ -410,7 +422,7 @@ kproto_gower <- function(x, k, lambda = NULL, iter.max = 100, na.rm = "yes", kee
     }
     for(jord in which(ordvars)) protos[,jord] <- factor(protos[,jord], levels = levels(protos[,jord]), ordered = TRUE)
     
-    # store standardizied ranksin lookup table for predict.kproto()
+    # store standardizied ranks in lookup table for predict.kproto()
     for(jord in 1:ncol(xord)){
       df <- data.frame(unique(xord[,jord]),
                        unique(x[,which(ordvars)[jord], drop = FALSE] / rgords[jord])
