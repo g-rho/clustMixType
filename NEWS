@@ -1,7 +1,13 @@
 ...tbds:  - add test for allNAs and kproto_gower
-          - try to remember why has there been clprofiles and not plot.kproto so far? (...x argument for keep.data = F? ) 
           - check NA treatment (argument + remove of NAs, ln 133ff + are they ignored if na.rm=F?)
 	        - update validation_kproto
+
+          -	clprofiles(): 
+            1) add legends for factors
+            2) check additional input parameter for a) w/o ask = T  b) specify mfrow/mfcol for simukltanous plots of several variables (+ add error check for this option if # of variables does not match grid)
+            ...is there aby potential impact on plot.kproto?
+          - try to remember why has there been clprofiles and not plot.kproto so far? (...x argument for keep.data = F? )
+
 
 
 clustMixType_0.3-9  2022-12-13   - number of test cases for validation_kproto reduced to decrease time for check on CRAN 
