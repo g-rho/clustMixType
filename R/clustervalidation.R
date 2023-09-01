@@ -839,24 +839,24 @@ tau_kproto <- function(object = NULL, data = NULL, k = NULL, dists = NULL, kp_ob
 
 #' @title Validating k Prototypes Clustering
 #'
-#' @description Calculating the prefered validation index for a k-Prototypes clustering with k clusters or computing the optimal number of clusters based on the choosen index for k-Prototype clustering. Possible validation indices are: \code{cindex}, \code{dunn}, \code{gamma}, \code{gplus}, \code{mcclain}, \code{ptbiserial}, \code{silhouette} and \code{tau}.
+#' @description Calculating the preferred validation index for a k-Prototypes clustering with k clusters or computing the optimal number of clusters based on the choosen index for k-Prototype clustering. Possible validation indices are: \code{cindex}, \code{dunn}, \code{gamma}, \code{gplus}, \code{mcclain}, \code{ptbiserial}, \code{silhouette} and \code{tau}.
 #' 
 #' @param method character specifying the validation index: \code{cindex}, \code{dunn}, \code{gamma}, \code{gplus}, \code{mcclain}, \code{ptbiserial}, \code{silhouette} or \code{tau}.
 #' @param object Object of class \code{kproto} resulting from a call with \code{kproto(..., keep.data=TRUE)}
 #' @param data Original data; only required if \code{object == NULL} and neglected if \code{object != NULL}.
 #' @param k Vector specifying the search range for optimum number of clusters; if \code{NULL} the range will set as \code{2:sqrt(n)}. Only required if \code{object == NULL} and neglected if \code{object != NULL}.
 #' @param lambda Factor to trade off between Euclidean distance of numeric variables and simple matching coefficient between categorical variables.
-#' @param kp_obj character either "optimal" or "all": Output of the index-optimal clustering (kp_obj == "optimal") or all computed clusterpartitions (kp_obj == "all"); only required if \code{object != NULL}.
+#' @param kp_obj character either "optimal" or "all": Output of the index-optimal clustering (kp_obj == "optimal") or all computed cluster partitions (kp_obj == "all"); only required if \code{object != NULL}.
 #' @param ... Further arguments passed to \code{\link[clustMixType]{kproto}}, like:
 #'   \itemize{
-#'     \item \code{nstart}: If > 1 repetetive computations of \code{kproto} with random initializations are computed.
+#'     \item \code{nstart}: If > 1 repetitive computations of \code{kproto} with random initializations are computed.
 #'     \item \code{verbose}: Logical whether information about the cluster procedure should be given. Caution: If \code{verbose=FALSE}, the reduction of the number of clusters is not mentioned.
 #'   }
 #' 
 #' @details More information about the implemented validation indices:
 #'   \itemize{
 #'     \item{\code{cindex}} {\deqn{Cindex = \frac{S_w-S_{min}}{S_{max}-S_{min}}} \cr
-#' For \eqn{S_{min}} and \eqn{S_{max}} it is nessesary to calculate the distances between all pairs of points in the entire data set (\eqn{\frac{n(n-1)}{2}}). 
+#' For \eqn{S_{min}} and \eqn{S_{max}} it is necessary to calculate the distances between all pairs of points in the entire data set (\eqn{\frac{n(n-1)}{2}}). 
 #' \eqn{S_{min}} is the sum of the "total number of pairs of objects belonging to the same cluster" smallest distances and 
 #' \eqn{S_{max}} is the sum of the "total number of pairs of objects belonging to the same cluster" largest distances. \eqn{S_w} is the sum of the within-cluster distances. \cr
 #' The minimum value of the index is used to indicate the optimal number of clusters.
@@ -989,7 +989,7 @@ validation_kproto <- function(method = NULL, object = NULL, data = NULL, k = NUL
   }
   if(length(k) > 1){
     if(nrow(data) < max(k)) stop("Data frame has less observations than clusters!")
-    if(any(k < 1) | any(k > nrow(data))) stop("Elements of k must be greater than 1 and strictly less than n!")
+    if(any(k <= 1) | any(k >= nrow(data))) stop("Elements of k must be greater than 1 and strictly less than n!")
     if(all(!as.integer(k)==k)) stop("Elements of k must be type of integer")
   }
   
