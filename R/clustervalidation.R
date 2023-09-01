@@ -841,9 +841,9 @@ tau_kproto <- function(object = NULL, data = NULL, k = NULL, dists = NULL, kp_ob
 #'
 #' @description Calculating the preferred validation index for a k-Prototypes clustering with k clusters or computing the optimal number of clusters based on the choosen index for k-Prototype clustering. Possible validation indices are: \code{cindex}, \code{dunn}, \code{gamma}, \code{gplus}, \code{mcclain}, \code{ptbiserial}, \code{silhouette} and \code{tau}.
 #' 
-#' @param method character specifying the validation index: \code{cindex}, \code{dunn}, \code{gamma}, \code{gplus}, \code{mcclain}, \code{ptbiserial}, \code{silhouette} or \code{tau}.
+#' @param method character specifying the validation index: \code{cindex}, \code{dunn}, \code{gamma}, \code{gplus}, \code{mcclain}, \code{ptbiserial}, \code{silhouette} (default) or \code{tau}.
 #' @param object Object of class \code{kproto} resulting from a call with \code{kproto(..., keep.data=TRUE)}
-#' @param data Original data; only required if \code{object == NULL} and neglected if \code{object != NULL}.
+#' @param data Original data; only required if \code{object == NULL} and neglected if \code{object != NULL}
 #' @param k Vector specifying the search range for optimum number of clusters; if \code{NULL} the range will set as \code{2:sqrt(n)}. Only required if \code{object == NULL} and neglected if \code{object != NULL}.
 #' @param lambda Factor to trade off between Euclidean distance of numeric variables and simple matching coefficient between categorical variables.
 #' @param kp_obj character either "optimal" or "all": Output of the index-optimal clustering (kp_obj == "optimal") or all computed cluster partitions (kp_obj == "all"); only required if \code{object != NULL}.
@@ -887,7 +887,7 @@ tau_kproto <- function(object = NULL, data = NULL, k = NULL, dists = NULL, kp_ob
 #' \eqn{\bar{S}_w} is the sum of within-cluster distances divided by the number of within-cluster distances and 
 #' \eqn{\bar{S}_b} is the sum of between-cluster distances divided by the number of between-cluster distances.\cr
 #' \eqn{N_t} is the total number of pairs of objects in the data, \eqn{N_w} is the total number of pairs of 
-#' objects belonging to the samecluster and \eqn{N_b} is the total number of pairs of objects belonging to different clusters.
+#' objects belonging to the same cluster and \eqn{N_b} is the total number of pairs of objects belonging to different clusters.
 #' \eqn{s_d} is the standard deviation of all distances.\cr
 #' The maximum value of the index is used to indicate the optimal number of clusters.
 #'     }
@@ -968,7 +968,7 @@ tau_kproto <- function(object = NULL, data = NULL, k = NULL, dists = NULL, kp_ob
 #' 
 #' 
 #' @export
-validation_kproto <- function(method = NULL, object = NULL, data = NULL, k = NULL, lambda = NULL, kp_obj = "optimal", ...){
+validation_kproto <- function(method = "silhouette", object = NULL, data = NULL, k = NULL, lambda = NULL, kp_obj = "optimal", ...){
 
 # tbd...    
   if(!is.null(object)) {if(object$type == "gower") stop("validation_kproto currently only implemented for type == 'gower'")}  

@@ -312,7 +312,7 @@ test_that("resulting objects based on tau index are as expected",{
 
 context("checking stability_kproto.\n")
 
-stab <- stability_kproto(method = c("luxburg","fowlkesmallows"), object = kpres)
+stab <- stability_kproto(object = kpres, method = c("luxburg","fowlkesmallows"))
 
 test_that("checking input objects of stability_kproto",{
   expect_error(stability_kproto(method = "stability", object = kpres, verbose = FALSE))

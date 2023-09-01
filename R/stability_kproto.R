@@ -81,10 +81,10 @@ stability_det_k <- function(data, k, method, B = 100, lambda = NULL, ...){
   
   # apply adjustment of paper
   adjustment <- data.frame(k_eval = names(indices), imean = indices) %>%
-    arrange(k_eval) %>% 
-    mutate(Nachbar_vor = ifelse(is.na(lag(imean)), 1, lag(imean)),
-           Nachbar_nach = ifelse(is.na(lead(imean)), imean, lead(imean)),
-           ivalue = imean * sqrt(imean/Nachbar_vor * imean/Nachbar_nach))
+    arrange(.data$k_eval) %>% 
+    mutate(Nachbar_vor = ifelse(is.na(lag(.data$imean)), 1, lag(.data$imean)),
+           Nachbar_nach = ifelse(is.na(lead(.data$imean)), .data$imean, lead(.data$imean)),
+           ivalue = .data$imean * sqrt(.data$imean/.data$Nachbar_vor * .data$imean/.data$Nachbar_nach))
   indices_adj <- adjustment$ivalue
   names(indices_adj) <- adjustment$k_eval
   
@@ -120,9 +120,6 @@ stability_det_k <- function(data, k, method, B = 100, lambda = NULL, ...){
 # x4 <- c(rnorm(n, mean = -muk), rnorm(n, mean = muk), rnorm(n, mean = -muk), rnorm(n, mean = muk))
 # x <- data.frame(x1,x2,x3,x4)
 # 
-# library(clustMixType)
-# library(tidyverse)
-# 
 # stability_det_k(data = x, k = 2:6, B = 100, method = "fowlkesmallows")
 
 
@@ -133,9 +130,9 @@ stability_det_k <- function(data, k, method, B = 100, lambda = NULL, ...){
 #'
 #' @description Calculating the stability for a k-Prototypes clustering with k clusters or computing the stability-based optimal number of clusters for k-Prototype clustering. Possible stability indices are: \code{Jaccard}, \code{Rand}, \code{Fowlkes \& Mallows} and \code{Luxburg}.
 #' 
-#' @param method character specifying the stability, either one or more of \code{luxburg}, \code{fowlkesmallows}, \code{rand} or/and \code{jaccard}.
-#' @param B numeric, number of bootstrap samples.
 #' @param object Object of class \code{kproto} resulting from a call with \code{kproto(..., keep.data=TRUE)}
+#' @param method character specifying the stability, either one or more of \code{luxburg}, \code{fowlkesmallows}, \code{rand} or/and \code{jaccard}.
+#' @param B numeric, number of bootstrap samples
 #' @param ... Further arguments passed to \code{\link[clustMixType]{kproto}}, like:
 #'   \itemize{
 #'     \item \code{nstart}: If > 1 repetitive computations of \code{kproto} with random initial prototypes are computed.
@@ -192,19 +189,24 @@ stability_det_k <- function(data, k, method, B = 100, lambda = NULL, ...){
 #' @rdname validation_kproto
 #' 
 #' @importFrom stats na.omit
-#' @importFrom utils combn
-#' @importFrom utils head
-#' @importFrom utils tail
+#' @importFrom combinat permn
+#' @importFrom dplyr %>% 
+#' @importFrom dplyr arrange
+#' @importFrom dplyr mutate
+#' @importFrom dplyr lag
+#' @importFrom dplyr lead
+#' @importFrom rlang .data
 #' 
 #' 
 #' @export
 
 
-stability_kproto <- function(method = c("luxburg", "fowlkesmallows", "rand", "jaccard"), B = 100, 
-                             object, verbose=FALSE, ...){
+stability_kproto <- function(object, 
+                             method = c("rand", "jaccard", "luxburg", "fowlkesmallows"), B = 100, 
+                             verbose=FALSE, ...){
   
   if(!inherits(object, "kproto")) stop("object must be type of 'kproto'")
-  if(is.numeric(B)) stop("B has to be numeric, e. g. B = 100")
+  if(!is.numeric(B)) stop("B has to be numeric, e. g. B = 100")
   
   if(is.null(object$data)) stop("object must contain clustered data (keep.data = TRUE)!")
   n <- nrow(object$data)
