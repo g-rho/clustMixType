@@ -186,7 +186,7 @@ stability_det_k <- function(data, k, method, B = 100, lambda = NULL, ...){
 #' 
 #' }
 #' 
-#' @rdname validation_kproto
+#' @rdname stability_kproto
 #' 
 #' @importFrom stats na.omit
 #' @importFrom combinat permn
