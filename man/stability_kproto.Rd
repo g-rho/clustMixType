@@ -19,6 +19,8 @@ stability_kproto(
 
 \item{B}{numeric, number of bootstrap samples}
 
+\item{verbose}{Logical whether information about the bootstrap procedure should be given.}
+
 \item{...}{Further arguments passed to \code{\link[clustMixType]{kproto}}, like:
 \itemize{
   \item \code{nstart}: If > 1 repetitive computations of \code{kproto} with random initial prototypes are computed.

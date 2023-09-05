@@ -133,6 +133,7 @@ stability_det_k <- function(data, k, method, B = 100, lambda = NULL, ...){
 #' @param object Object of class \code{kproto} resulting from a call with \code{kproto(..., keep.data=TRUE)}
 #' @param method character specifying the stability, either one or more of \code{luxburg}, \code{fowlkesmallows}, \code{rand} or/and \code{jaccard}.
 #' @param B numeric, number of bootstrap samples
+#' @param verbose Logical whether information about the bootstrap procedure should be given.
 #' @param ... Further arguments passed to \code{\link[clustMixType]{kproto}}, like:
 #'   \itemize{
 #'     \item \code{nstart}: If > 1 repetitive computations of \code{kproto} with random initial prototypes are computed.
