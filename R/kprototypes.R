@@ -567,7 +567,11 @@ predict.kproto <-function(object, newdata, ...){
       if(length(lambda) > 1) d1<- as.matrix(d1) %*% lambda[numvars]
       #a1 <- proc.time()[3]      
       #d2 <- lambda * apply(x[,catvars],1, function(z) sum((z != protos[i,catvars]))) # wtd simple matching for categorics 
-      d2 <- sapply(which(catvars), function(j) return(x[,j] != rep(protos[i,j], nrows)) )
+      d2 <- sapply(which(catvars), function(j) {
+        prepared_protos <- rep(protos[i,j], nrows)
+        levels(prepared_protos) <- levels(x[,j])
+        return(x[,j] != prepared_protos)
+      })
       # fix for x data frame with only one observation according to G.Terziysky
       if (nrows == 1) d2 <- matrix(data = d2, nrow = 1, byrow = TRUE, dimnames = list(NULL, names(x)[catvars])) # <- FIX
       d2[is.na(d2)] <- FALSE
