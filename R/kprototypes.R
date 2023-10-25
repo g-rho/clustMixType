@@ -46,7 +46,7 @@ kproto <- function (x, ...)
 #' @param keep.data Logical whether original should be included in the returned object.
 #' @param verbose Logical whether additional information about process should be printed. 
 #' Caution: For \code{verbose=FALSE}, if the number of clusters is reduced during the iterations it will not mentioned.
-#' @param init Character, to specify the initialization strategy. Either \cdoe{"nbh.dens"}, \cdoe{"sel.cen"} or \code{"nstart.m"}. Default is \code{"NULL"}, which results in nstart repetitive algorithm computations with random starting prototypes. Otherwise, \code{nstart} is not used. Argument k must be a number if a specific initialization strategy is choosen!
+#' @param init Character, to specify the initialization strategy. Either \code{"nbh.dens"}, \code{"sel.cen"} or \code{"nstart.m"}. Default is \code{"NULL"}, which results in nstart repetitive algorithm computations with random starting prototypes. Otherwise, \code{nstart} is not used. Argument k must be a number if a specific initialization strategy is choosen!
 #' @param p_nstart.m Numeric, probability(=0.9 is default) for \code{init="nstart.m"}, where the strategy assures that with a probability of \code{p_nstart.m} at least one of the m sets of initial prototypes contains objects of every cluster group (cf. Aschenbruck et al. (2023): Random-based Initialization for clustering mixed-type data with the k-Prototypes algorithm. In: {\emph{Cladag 2023 Book of abstracts and short spapers}}, isbn: 9788891935632.).  
 #' @param \dots Currently not used.
 #
@@ -121,6 +121,7 @@ kproto <- function (x, ...)
 #' 
 #' @importFrom stats complete.cases
 #' @importFrom tibble is_tibble 
+#' @importFrom stats qgeom
 #' 
 #' @method kproto default
 #' @export 
@@ -500,7 +501,9 @@ kproto.default <- function(x, k, lambda = NULL, type = "standard", iter.max = 10
         x <- origin
       }
       res.new <- kproto(x=x, k=k_input, lambda = lambda,  type = type, iter.max = iter.max, nstart=1, verbose=verbose, na.rm = na.rm, keep.data = keep.data)
-      if(init == "nstart.m"){res.new[["nstart.m"]] <- init_nstart.m}
+      if(!is.null(init)){
+        if(init == "nstart.m"){res.new[["nstart.m"]] <- init_nstart.m}
+      } 
       if(res.new$tot.withinss < res$tot.withinss) res <- res.new
     }  
   
@@ -577,6 +580,31 @@ dists_kproto <- function(x, y = NULL, lambda = NULL, verbose = FALSE){
   if(length(lambda) > 1) d2 <- as.matrix(d2) %*% lambda[catvars]
   
   return(cbind(dat_part1, dat_part2, dist = as.vector(d1 + d2)))
+}
+
+
+
+dist_kproto <- function(x, y, lambda, verbose = FALSE){
+  
+  x <- rbind(x,y)
+  
+  # check for numeric and factor variables
+  numvars <- sapply(x, is.numeric)
+  anynum <- any(numvars)
+  catvars <- sapply(x, is.factor)
+  anyfact <- any(catvars)
+  
+  # compute distances 
+  nrows <- nrow(x)
+  d1 <- (x[1, numvars, drop = FALSE] - x[2, numvars, drop = FALSE])^2
+  if(length(lambda) == 1) d1 <- rowSums(d1, na.rm = TRUE)
+  if(length(lambda) > 1) d1 <- as.matrix(d1) %*% lambda[numvars]
+  d2 <- sapply(which(catvars), function(j) return(x[1,j] != x[2,j]))
+  d2[is.na(d2)] <- FALSE
+  if(length(lambda) == 1) d2 <- lambda * rowSums(matrix(d2, nrow = 1))
+  if(length(lambda) > 1) d2 <- as.matrix(d2) %*% lambda[catvars]
+  
+  return(as.numeric(d1 + d2))
 }
 
 
@@ -910,6 +938,7 @@ clprofiles <- function(object, x, vars = NULL, col = NULL){
 #' @param num.method Integer 1 or 2. Specifies the heuristic used for numeric variables.
 #' @param fac.method Integer 1 or 2. Specifies the heuristic used for factor variables.
 #' @param outtype Specifies the desired output: either 'numeric', 'vector' or 'variation'.
+#' @param verbose Logical whether additional information about process should be printed. 
 #' 
 #' @return \item{lambda}{Ratio of averages over all numeric/factor variables is returned. 
 #' In case of \code{outtype = "vector"} the separate lambda for all variables is returned as the inverse of the single variables' 
