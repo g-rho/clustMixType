@@ -8,7 +8,11 @@
             ...is there aby potential impact on plot.kproto?
           - try to remember why has there been clprofiles and not plot.kproto so far? (...x argument for keep.data = F? )
 
-
+clustMixType_0.3-12 2023-10-25  - implemented three initialization strategies, for which 3 help functions were added
+                                - clean up lambdaest
+                                - include lambdaest into kproto
+                                - fixed some minor typos
+                                - fixed: no output if keep.data = FALSE and nstart>1
 clustMixType_0.3-11 2023-09-05  - .rd file for stability_kproto
                                 - bugfix stability_kproto: undefined input parameter
 clustMixType_0.3-10 2023-09-01  - cluster stability determination added, along with updated tests
