@@ -1,4 +1,5 @@
-...tbds:  - add test for allNAs and kproto_gower
+...tbds:  - check and fix PR #16 by ztime: Fix for different levels in training data and x.
+          - add test for allNAs and kproto_gower
           - check NA treatment (argument + remove of NAs, ln 133ff + are they ignored if na.rm=F?)
 	        - update validation_kproto
 
