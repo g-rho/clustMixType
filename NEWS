@@ -1,14 +1,19 @@
 ...tbds:  - check and fix PR #16 by ztime: Fix for different levels in training data and x.
+          - check double printing of #NAs when usingusing lambdaest.
+  
           - add test for allNAs and kproto_gower
           - check NA treatment (argument + remove of NAs, ln 133ff + are they ignored if na.rm=F?)
 	        - update validation_kproto
 
           -	clprofiles(): 
             1) add legends for factors
-            2) check additional input parameter for a) w/o ask = T  b) specify mfrow/mfcol for simukltanous plots of several variables (+ add error check for this option if # of variables does not match grid)
+            2) check additional input parameter for a) w/o ask = T  b) specify mfrow/mfcol for simultaneous plots of several variables (+ add error check for this option if # of variables does not match grid)
             ...is there aby potential impact on plot.kproto?
           - try to remember why has there been clprofiles and not plot.kproto so far? (...x argument for keep.data = F? )
 
+clustMixType_0.3-14 2023-12-10  - winbuilder note: validation_kproto.Rd: \itemize environment changed: unlike argument lists, \item in these formats is followed by a space and the text (not enclosed in braces) 
+clustMixType_0.3-13 2023-12-09  - Date field changed to ISO 8601 yyyy-mm-dd format according to Rwinbuilder check note.
+                                - kproto_gower.Rd, \item{lambda}  ...\code{code}{type = "gower"}... corrected.
 clustMixType_0.3-12 2023-10-25  - implemented three initialization strategies, for which 3 help functions were added
                                 - clean up lambdaest
                                 - include lambdaest into kproto
