@@ -269,17 +269,6 @@ kproto.default <- function(x, k, lambda = NULL, type = "standard", iter.max = 10
       if(verbose) cat("Estimated lambda:", lambda, "\n\n")
     }
     
-    # deleting all incomplete observations
-    if(na.rm == "yes"){
-      miss <- apply(x, 1, function(z) any(is.na(z)))
-      if(verbose){
-        cat(sum(miss), "observation(s) with NAs.\n")
-        if(sum(miss) > 0) message("Observations with NAs are removed.\n")
-        cat("\n")
-      }
-      x <- x[!miss,]
-    }
-    
     # initialize clusters
     clusters  <- numeric(nrow(x)) 
     tot.dists <- NULL

@@ -132,36 +132,6 @@ kproto_gower <- function(x, k, lambda = NULL, iter.max = 100, na.rm = "yes", kee
   # initialize lookup table to store standardized ranks / ranges of numeric variables for predict.kproto()
   lookup <- list() 
   
-  # # treatment of missings  ...done by kproto()
-  # NAcount <- apply(x, 2, function(z) sum(is.na(z)))
-  # if(verbose){
-  #   cat("# NAs in variables:\n")
-  #   print(NAcount)
-  # }
-  # if(any(NAcount == nrow(x))) stop(paste("Variable(s) have only NAs please remove them:", names(NAcount)[NAcount == nrow(x)],"!"))
-  # if(na.rm == "yes") {
-  #   miss <- apply(x, 1, function(z) any(is.na(z)))
-  #   if(verbose){
-  #     cat(sum(miss), "observation(s) with NAs.\n")
-  #     if(sum(miss) > 0) message("Observations with NAs are removed.\n")
-  #     cat("\n")
-  #   } 
-  #   x <- x[!miss,]
-  #   } # remove missings
-  # 
-  # if(na.rm != "yes"){
-  #   allNAs <- apply(x,1,function(z) all(is.na(z)))
-  #   if(sum(allNAs) > 0){
-  #     if(verbose) cat(sum(allNAs), "observation(s) where all variables NA.\n")
-  #     warning("No meaningful cluster assignment possible for observations where all variables NA.\n")
-  #     if(verbose) cat("\n")
-  #     
-  #   }
-  # }
-  
-  # if(nrow(x) == 1) stop("Only one observation clustering not meaningful.") # ...checked by kproto
-  # k_input <- k # store input k for nstart > 1 as clusters can be merged 
-  
   # vector of ranges for normalization  
   if(any(numvars)) rgnums <- sapply(x[, numvars, drop = FALSE], function(z) diff(range(z)))
   if(any(ordvars)){
