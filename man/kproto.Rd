@@ -11,7 +11,7 @@ kproto(x, ...)
   x,
   k,
   lambda = NULL,
-  type = "standard",
+  type = "Huang",
   iter.max = 100,
   nstart = 1,
   na.rm = "yes",
@@ -34,7 +34,7 @@ and simple matching coefficient between categorical variables. Also a vector of 
 the order must correspond to the order of the variables in the data. In this case all variables' distances will be multiplied by 
 their corresponding lambda value.}
 
-\item{type}{Character, to specify the distance for clustering. Either \code{"standard"} (cf. details below) or \code{"gower"}. The latter calls \code{\link{kproto_gower}}.}
+\item{type}{Character, to specify the distance for clustering. Either \code{"standard"}, \code{"Huang"} or (cf. details below) or \code{"gower"}. The latter calls \code{\link{kproto_gower}}.}
 
 \item{iter.max}{Maximum number of iterations if no convergence before.}
 
@@ -89,7 +89,7 @@ Computes k-prototypes clustering for mixed-type data.
 }
 \details{
 The algorithm like k-means iteratively recomputes cluster prototypes and reassigns clusters.
-For \code{type = "standard"}
+Both \code{type = "standard"} and \code{type = "Huang"} use the same distance:  
 clusters are assigned using \eqn{d(x,y) =  d_{euclid}(x,y) + \lambda d_{simple\,matching}(x,y)}.
 Cluster prototypes are computed as cluster means for numeric variables and modes for factors 
 (cf. Huang, 1998).

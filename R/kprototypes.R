@@ -9,7 +9,7 @@
 #' @description Computes k-prototypes clustering for mixed-type data.
 #' 
 #' @details The algorithm like k-means iteratively recomputes cluster prototypes and reassigns clusters.
-#' For \code{type = "standard"}
+#' Both \code{type = "standard"} and \code{type = "Huang"} use the same distance:  
 #' clusters are assigned using \eqn{d(x,y) =  d_{euclid}(x,y) + \lambda d_{simple\,matching}(x,y)}.
 #' Cluster prototypes are computed as cluster means for numeric variables and modes for factors 
 #' (cf. Huang, 1998).
@@ -39,7 +39,7 @@ kproto <- function (x, ...)
 #' and simple matching coefficient between categorical variables. Also a vector of variable specific factors is possible where 
 #' the order must correspond to the order of the variables in the data. In this case all variables' distances will be multiplied by 
 #' their corresponding lambda value.
-#' @param type Character, to specify the distance for clustering. Either \code{"standard"} (cf. details below) or \code{"gower"}. The latter calls \code{\link{kproto_gower}}.
+#' @param type Character, to specify the distance for clustering. Either \code{"standard"}, \code{"Huang"} or (cf. details below) or \code{"gower"}. The latter calls \code{\link{kproto_gower}}.
 #' @param iter.max Maximum number of iterations if no convergence before.
 #' @param nstart If > 1 repetitive computations with random initializations are computed and the result with minimum tot.dist is returned.
 #' @param na.rm Character; Either "yes" to strip NA values for complete case analysis, "no" to keep and ignore NA values, "imp.internal" to impute the NAs within the algorithm or "imp.onestep" to apply the algorithm ignoring the NAs and impute them after the partition is determined.
@@ -125,7 +125,7 @@ kproto <- function (x, ...)
 #' 
 #' @method kproto default
 #' @export 
-kproto.default <- function(x, k, lambda = NULL, type = "standard", iter.max = 100, nstart = 1, na.rm = "yes", keep.data = TRUE, verbose = TRUE, init = NULL, p_nstart.m = 0.9, ...){
+kproto.default <- function(x, k, lambda = NULL, type = "Huang", iter.max = 100, nstart = 1, na.rm = "yes", keep.data = TRUE, verbose = TRUE, init = NULL, p_nstart.m = 0.9, ...){
   
   # enable input of tibbles
   if(is_tibble(x) == TRUE){x <- as.data.frame(x)}
@@ -174,6 +174,7 @@ kproto.default <- function(x, k, lambda = NULL, type = "standard", iter.max = 10
     stop("Argument na.rm must be either 'yes','no','imp.internal' or 'imp.onestep'!")
   }
   
+  if(type == "Huang") type <- "standard"
   if(!type %in% c("standard", "gower")) stop("Argument type must be either 'standard' or 'gower'!")
   if(type == "standard"){
     
