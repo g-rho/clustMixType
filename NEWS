@@ -17,6 +17,7 @@
             ...is there aby potential impact on plot.kproto?
           - try to remember why has there been clprofiles and not plot.kproto so far? (...x argument for keep.data = F? )
 
+clustMixType_0.3-17 2024-06-05  - fixed minor issues: print.kproto (num of categoricals); kproto (consistent description of the type argument)
 clustMixType_0.3-16 2023-12-17  - kprototypes: new default type = "Huang" added (ln.177) to make sure. (internally relabelled as type = "standard". old call type = "standard" is still possible.)
 clustMixType_0.3-15 2023-12-13  - kprototypes: ln. 272-281 removed (missings removed twice for na.rm = "yes", the 2nd time is redundant)
                                 (- kprtotypes_gower: ln. commented 135-163 removed to be the code more readable.)

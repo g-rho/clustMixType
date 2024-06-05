@@ -175,12 +175,12 @@ x <- data.frame(x1, x2)
 
 kpres <- kproto(x = x, k = 4)
 test_that("Standard still works if ordered factors.",{
-  expect_equal(kpres$type, "standard")}
+  expect_equal(kpres$type, "huang")}
 )
 
 kpres <- kproto(x = x, k = 4, type = "standard")
 test_that("Standard still works if ordered factors.",{
-  expect_equal(kpres$type, "standard")}
+  expect_equal(kpres$type, "huang")}
 )
 
 kpres <- kproto(x = x, k = 4, type = "gower")
