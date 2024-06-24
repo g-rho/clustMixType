@@ -642,7 +642,7 @@ mcclain_kproto <- function(object = NULL, type = NULL, data = NULL, k = NULL, kp
     return(index)
   }else{
     #calculate all kproto objects for k
-    object <- kproto(x = data, k = k[1], type = type, keep.data = TRUE, verbose = verbose, ...)
+    object <- kproto(x = data, k = k[1], type = type, keep.data = TRUE, lambda = lambda, verbose = verbose, ...)
     trace_kp <- list(list("index" = mcclain_kproto(object = object, data_plus = data_plus), 
                           "k" = length(object$size), "object" = object))
     for(q in k[-1]){
