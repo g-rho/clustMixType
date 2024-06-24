@@ -80,7 +80,7 @@ kproto_gower <- function(x, k, lambda = NULL, iter.max = 100, na.rm = "yes", kee
   
   if(length(lambda) > 0){
     if(length(lambda) != sum(c(numvars,catvars,ordvars))) {
-      warning("For gower distance if lambda is specified, its length must be the sum of numeric and factor variables in the data frame!")
+      warning("For gower distance if lambda is specified, its length must be the sum of numeric and factor variables in the data frame! Otherwise it will be ignored.")
       lambda <- NULL
     }
   }
