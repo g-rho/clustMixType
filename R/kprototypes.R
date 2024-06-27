@@ -493,8 +493,8 @@ kproto.default <- function(x, k, lambda = NULL, type = "huang", iter.max = 100, 
   }
   
   if(type == "gower"){
-    if(na.rm %in% c("imp.internal", "imp.onestep")){
-      stop("Argument na.rm must be either 'yes' or 'no', since imputation is not yet implemented for type = 'gower'!")
+    if(na.rm %in% c("imp.internal")){
+      stop("Argument na.rm must be either 'yes','no' or 'imp-onestep', since imp.internal is not yet implemented for type = 'gower'!")
     }
     res <- kproto_gower(x=x, k=k_input, lambda = lambda, iter.max = iter.max, verbose=verbose, na.rm = na.rm)
   }
@@ -519,12 +519,30 @@ kproto.default <- function(x, k, lambda = NULL, type = "huang", iter.max = 100, 
   
   if(na.rm == "imp.onestep"){
     x <- res$data
-    if(any(is.na(x[,numvars]))){
-      x[,numvars][is.na(x[,numvars])] <- protos[clusters,numvars][is.na(x[,numvars])]
+    
+    if(type == "huang"){
+      if(any(is.na(x[,numvars]))){
+        x[,numvars][is.na(x[,numvars])] <- protos[clusters,numvars][is.na(x[,numvars])]
+      }
+      if(any(is.na(x[,catvars]))){
+        x[,catvars][is.na(x[,catvars])] <- protos[clusters,catvars][is.na(x[,catvars])]
+      }
+    }else{#type=gower
+      numvars <- sapply(x, is.numeric)
+      ordvars <- sapply(x, is.ordered)
+      catvars <- sapply(x, is.factor) & !ordvars
+      
+      if(any(is.na(x[,numvars]))){
+        x[,numvars][is.na(x[,numvars])] <- protos[clusters,numvars][is.na(x[,numvars])]
+      }
+      if(any(is.na(x[,ordvars]))){
+        x[,ordvars][is.na(x[,ordvars])] <- protos[clusters,ordvars][is.na(x[,ordvars])]
+      }
+      if(any(is.na(x[,catvars]))){
+        x[,catvars][is.na(x[,catvars])] <- protos[clusters,catvars][is.na(x[,catvars])]
+      }
     }
-    if(any(is.na(x[,catvars]))){
-      x[,catvars][is.na(x[,catvars])] <- protos[clusters,catvars][is.na(x[,catvars])]
-    }
+    
     res$data <- x
   }
   

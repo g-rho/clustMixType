@@ -4,11 +4,7 @@
           - check NA treatment (argument + remove of NAs, ln 133ff + are they ignored if na.rm=F?)
           - migrate to 0.4-1 (after missing, gower and initialization updates)
           - maybe add variable importance (LO/perm) to post-validate selection od lambda 
-
-          @Rabea:
-	        - update validation_kproto
-	        - check -itemize environment in validation_kproto.Rd (v0.3-14)
-	        - check again whether missing treatment for type = "gower" is done as for type = "standard 
+          - check -itemize environment in validation_kproto.Rd (v0.3-14)
     
     
           -	clprofiles(): 
@@ -17,7 +13,8 @@
             ...is there aby potential impact on plot.kproto?
           - try to remember why has there been clprofiles and not plot.kproto so far? (...x argument for keep.data = F? )
 
-clustMixType_0.4-1 2024-06-05   - enable clustervalidation for type=gower
+clustMixType_0.4-1  2024-06-05  - for type=gower: enable na.rm=imp.onestep and fix na.rm=no
+clustMixType_0.4-1  2024-06-05  - enable clustervalidation for type=gower
 clustMixType_0.3-17 2024-06-05  - fixed minor issues: print.kproto (num of categoricals); kproto (consistent description of the type argument)
 clustMixType_0.3-16 2023-12-17  - kprototypes: new default type = "Huang" added (ln.177) to make sure. (internally relabelled as type = "standard". old call type = "standard" is still possible.)
 clustMixType_0.3-15 2023-12-13  - kprototypes: ln. 272-281 removed (missings removed twice for na.rm = "yes", the 2nd time is redundant)
