@@ -26,12 +26,12 @@ kproto_gower <- function(x, k, lambda = NULL, iter.max = 100, na.rm = "yes", kee
   lookup <- list() 
   
   # vector of ranges for normalization  
-  if(any(numvars)) rgnums <- sapply(x[, numvars, drop = FALSE], function(z) diff(range(z)))
+  if(any(numvars)) rgnums <- sapply(x[, numvars, drop = FALSE], function(z) diff(range(z, na.rm = TRUE)))
   if(any(ordvars)){
     xord   <- x[, ordvars, drop = FALSE] # store original variables 
     # ...and replace ordered variables by their ranks
-    for(jord in which(ordvars)) x[,jord] <- rank(x[,jord])
-    rgords <- sapply(x[, ordvars, drop = FALSE], function(z) diff(range(z)))
+    for(jord in which(ordvars)) x[,jord] <- rank(x[,jord], na.last = "keep")
+    rgords <- sapply(x[, ordvars, drop = FALSE], function(z) diff(range(z, na.rm = TRUE)))
   }
 
   # initialize prototypes
