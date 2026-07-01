@@ -1,10 +1,16 @@
 Package: clustMixType
-Version: 0.5-1
-Date: 2026-05-12
+Version: 0.5-2
+Date: 2026-06-25
 Title: k-Prototypes Clustering for Mixed Variable-Type Data
-Author: Gero Szepannek [aut, cre], Rabea Aschenbruck [aut]
-Maintainer: Gero Szepannek <gero.szepannek@web.de>
-Imports: RColorBrewer, tibble, combinat, dplyr, rlang, cluster
+Authors@R: c(person(given = "Gero", 
+ 		    family = "Szepannek", 
+                    role = c("aut", "cre"), 
+                    email = "gero.szepannek@web.de"),
+             person(given = "Rabea", 
+                    family = "Aschenbruck", 
+                    role = "aut")
+             )
+Imports: RColorBrewer, tibble, combinat, dplyr, rlang, cluster, mclust
 Suggests: testthat
 Description: Functions to perform k-prototypes partitioning clustering for
     mixed variable-type data according to Z.Huang (1998): Extensions to the k-Means
